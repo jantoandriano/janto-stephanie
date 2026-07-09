@@ -175,31 +175,95 @@
     color:var(--parchment);
   }
 
+  /* postage-stamp seal — perforated paper edge, inner frame, monogram + postmark */
   .seal-btn{
+    --perf:6px;           /* notch radius */
+    --gap:15px;           /* spacing between notches */
     position:relative;
-    width:112px; height:112px;
-    margin:2.4rem auto 0;
-    border-radius:50%;
-    border:1px solid var(--gold-soft);
-    display:flex; align-items:center; justify-content:center;
-    color:var(--parchment);
-    transition:transform .5s var(--ease), opacity .6s var(--ease);
+    width:142px; height:170px;
+    margin:2.6rem auto 0;
+    border:none;
+    padding:14px;
+    background:
+      linear-gradient(180deg, #FCF8FD, #F4ECF6 60%, #F1E7F4);
+    /* four edge masks intersected → notches on every side */
+    -webkit-mask:
+      radial-gradient(var(--perf) at 50% 0,    #0000 97%, #000) 50% 0    / var(--gap) 100% repeat-x,
+      radial-gradient(var(--perf) at 50% 100%, #0000 97%, #000) 50% 100% / var(--gap) 100% repeat-x,
+      radial-gradient(var(--perf) at 0 50%,    #0000 97%, #000) 0 50%    / 100% var(--gap) repeat-y,
+      radial-gradient(var(--perf) at 100% 50%, #0000 97%, #000) 100% 50% / 100% var(--gap) repeat-y;
+    -webkit-mask-composite:source-in;
+            mask:
+      radial-gradient(var(--perf) at 50% 0,    #0000 97%, #000) 50% 0    / var(--gap) 100% repeat-x,
+      radial-gradient(var(--perf) at 50% 100%, #0000 97%, #000) 50% 100% / var(--gap) 100% repeat-x,
+      radial-gradient(var(--perf) at 0 50%,    #0000 97%, #000) 0 50%    / 100% var(--gap) repeat-y,
+      radial-gradient(var(--perf) at 100% 50%, #0000 97%, #000) 100% 50% / 100% var(--gap) repeat-y;
+            mask-composite:intersect;
+    /* box-shadow is clipped by the mask, so lift with a drop-shadow filter */
+    filter:drop-shadow(0 10px 22px rgba(176,135,60,.22)) drop-shadow(0 3px 8px rgba(217,139,160,.18));
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:.4rem;
+    transition:transform .5s var(--ease), opacity .6s var(--ease), filter .45s var(--ease);
   }
-  .seal-ring{
-    position:absolute; inset:-10px;
+  /* inner ruled frame just inside the perforations */
+  .seal-frame{
+    position:absolute; inset:11px;
     border:1px solid var(--gold-soft);
-    border-radius:50%;
-    animation:spin 22s linear infinite;
+    pointer-events:none;
   }
-  @keyframes spin{ to{ transform:rotate(360deg); } }
   .seal-label{
-    font-family:var(--font-body);
-    font-size:.68rem;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    line-height:1.5;
+    position:relative;
+    z-index:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:.28rem;
   }
-  .seal-btn:hover .seal-label{ color:var(--gold); }
+  .stamp-mono{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-size:.82rem;
+    letter-spacing:.06em;
+    color:var(--gold);
+  }
+  .seal-verb{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-weight:500;
+    font-size:1.7rem;
+    line-height:1;
+    color:var(--parchment);
+  }
+  .seal-sub{
+    font-family:var(--font-body);
+    font-size:.55rem;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--gold);
+  }
+  /* faux circular postmark, top-right */
+  .stamp-postmark{
+    position:absolute;
+    top:16px; right:14px;
+    width:46px; height:46px;
+    border:1px solid var(--gold-soft);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-body);
+    font-size:.42rem;
+    letter-spacing:.06em;
+    color:var(--gold);
+    opacity:.55;
+    transform:rotate(-12deg);
+    pointer-events:none;
+  }
+  .seal-btn:hover{
+    transform:translateY(-3px);
+    filter:drop-shadow(0 16px 30px rgba(217,139,160,.30)) drop-shadow(0 4px 10px rgba(176,135,60,.24));
+  }
 
   .scroll-hint{
     position:absolute;
@@ -372,7 +436,7 @@
 
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; }
-    .cover-ambient, .seal-ring, .spark{ animation:none !important; }
+    .cover-ambient, .spark{ animation:none !important; }
   }
 </style>
 </head>
@@ -402,8 +466,13 @@
       </div>
 
       <button class="seal-btn" id="openBtn" aria-label="Open the wedding invitation">
-        <span class="seal-ring" aria-hidden="true"></span>
-        <span class="seal-label">Open<br>Invitation</span>
+        <span class="seal-frame" aria-hidden="true"></span>
+        <span class="stamp-postmark" aria-hidden="true">03·01·27</span>
+        <span class="seal-label">
+          <span class="stamp-mono">S &amp; J</span>
+          <span class="seal-verb">Open</span>
+          <span class="seal-sub">the invitation</span>
+        </span>
       </button>
 
       <p class="invalid-note" id="invalidNote">
@@ -561,16 +630,20 @@
     document.getElementById('captionName').textContent = guestName;
   }
 
-  // ---- RSVP button → Google Form, prefilled with the guest name ----
-  // TODO: swap these two placeholders for your real form.
-  //   1. RSVP_FORM_URL — open your form, click "Send" → link icon, copy the /viewform URL.
-  //   2. RSVP_NAME_ENTRY — in the form click ⋮ → "Get pre-filled link", type a dummy name,
-  //      submit, and copy the "entry.XXXXXXX" id from the resulting URL.
-  var RSVP_FORM_URL   = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform';
-  var RSVP_NAME_ENTRY = 'entry.123456789';
+  // ---- RSVP button → Google Form ----
+  //  Form: https://forms.gle/nsnKdqSS8TMA3Z9a8  (resolved to the /viewform URL below)
+  //
+  //  OPTIONAL name prefill: to auto-fill the guest's name into the form's
+  //  "What are the names of people attending?" field, put its entry id in
+  //  RSVP_NAME_ENTRY below. To find it: open the form → ⋮ menu →
+  //  "Get pre-filled link" → type any name in that field → "Get link" → copy
+  //  the entry.XXXXXXX from the URL it gives you. Leave it '' to just open the
+  //  blank form (guest types their own name).
+  var RSVP_FORM_URL   = 'https://docs.google.com/forms/d/e/1FAIpQLScWu-VI0XFzGH-HxtOQJRL5R8c9BN-IjrU79B0zQteBrMduCA/viewform';
+  var RSVP_NAME_ENTRY = ''; // e.g. 'entry.123456789'
   (function(){
     var url = RSVP_FORM_URL;
-    if (guestName){
+    if (guestName && RSVP_NAME_ENTRY){
       url += (url.indexOf('?') === -1 ? '?' : '&')
            + 'usp=pp_url&' + RSVP_NAME_ENTRY + '=' + encodeURIComponent(guestName);
     }
