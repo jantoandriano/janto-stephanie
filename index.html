@@ -505,6 +505,13 @@
     setTimeout(function(){
       document.getElementById('mainContent').scrollIntoView({ behavior:'smooth' });
     }, 350);
+
+    // Once the seal animation + scroll finish, the cover is off-screen, so
+    // clear the "is-open" state. That restores the cover to its full look
+    // (names + seal) for when the guest scrolls back up to it.
+    setTimeout(function(){
+      cover.classList.remove('is-open');
+    }, 1100);
   });
 
   // ---- hide the video placeholder once a real source loads ----
