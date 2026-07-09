@@ -213,6 +213,24 @@
     transition:opacity .5s var(--ease);
   }
 
+  /* neutral state shown when the ?g= code is missing from the guest list */
+  .invalid-note{
+    display:none;
+    margin:2rem auto 0;
+    max-width:300px;
+    font-family:var(--font-body);
+    font-size:.8rem;
+    line-height:1.7;
+    letter-spacing:.03em;
+    color:var(--parchment);
+    opacity:.85;
+  }
+  .cover.is-invalid .seal-btn,
+  .cover.is-invalid .guest-block,
+  .cover.is-invalid .cover-date,
+  .cover.is-invalid .scroll-hint{ display:none; }
+  .cover.is-invalid .invalid-note{ display:block; }
+
   /* state when the seal has been opened */
   .cover.is-open .cover-content{ opacity:0; transform:translateY(-16px) scale(.97); pointer-events:none; }
   .cover.is-open .scroll-hint{ opacity:0; }
@@ -387,6 +405,11 @@
         <span class="seal-ring" aria-hidden="true"></span>
         <span class="seal-label">Open<br>Invitation</span>
       </button>
+
+      <p class="invalid-note" id="invalidNote">
+        This invitation link isn&rsquo;t valid.<br>
+        Please use the personal link sent to you, or reach out to Stephanie &amp; Janto.
+      </p>
     </div>
 
     <p class="scroll-hint" id="scrollHint">Tap the seal to begin</p>
@@ -438,20 +461,43 @@
   </main>
 
 <script>
-  // ---- read the guest name from the link, e.g. yoursite.com/?to=Budi+Santoso ----
-  function getGuestName(){
-    var params = new URLSearchParams(window.location.search);
-    var raw = params.get('to');
-    if (!raw) return null;
-    try{
-      return decodeURIComponent(raw.replace(/\+/g, ' ')).trim();
-    }catch(e){
-      return raw.replace(/\+/g, ' ').trim();
+  // ============================================================
+  //  GUEST LIST  —  the only names that get a personalized invite
+  //  ------------------------------------------------------------
+  //  Each guest gets a private code; their link is  yoursite.com/?g=CODE
+  //  Add one line per guest below:  code : 'Full Name'.
+  //
+  //  Pick codes that are hard to guess (6+ random chars), e.g.
+  //  the sample ones below. Give each guest ONLY their own link.
+  //
+  //  NOTE: because this is a static page with no server, the list
+  //  still lives in the page source — anyone opening DevTools can
+  //  read it. This stops casual link-editing / param-swapping; it
+  //  is not a hard security wall. The reception's own name check
+  //  at the door remains the real gate.
+  // ============================================================
+ var GUESTS = {
+    'wnp25d': 'Julio Kolopitawondal',
+  };
+
+  // ---- read the invite code from the link, e.g. yoursite.com/?g=k7f2a9 ----
+  var inviteCode = (new URLSearchParams(window.location.search).get('g') || '').trim();
+  var guestName = null;
+  var invalidInvite = false;
+
+  if (inviteCode){
+    if (Object.prototype.hasOwnProperty.call(GUESTS, inviteCode)){
+      guestName = GUESTS[inviteCode];
+    } else {
+      // code present but not on the list → block, show neutral message
+      invalidInvite = true;
     }
   }
+  // (no code at all → generic invite: names + seal, but no personalized "To:")
 
-  var guestName = getGuestName();
-  if (guestName){
+  if (invalidInvite){
+    document.getElementById('cover').classList.add('is-invalid');
+  } else if (guestName){
     document.getElementById('guestName').textContent = guestName;
     document.getElementById('guestBlock').classList.add('show');
     document.getElementById('captionName').textContent = guestName;
