@@ -309,6 +309,31 @@
   .mute-btn.is-muted .icon-on{ display:none; }
   .mute-btn.is-muted .icon-muted{ display:block; }
 
+  /* RSVP pill — mirrors the mute button, sits bottom-left over the video */
+  .rsvp-btn{
+    position:absolute;
+    left:16px;
+    bottom:max(16px, env(safe-area-inset-bottom));
+    z-index:4;
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+    padding:.6rem 1.15rem;
+    border-radius:999px;
+    background:rgba(13,22,17,.45);
+    backdrop-filter:blur(3px);
+    border:1px solid rgba(198,161,91,.4);
+    color:var(--parchment);
+    font-family:var(--font-body);
+    font-size:.72rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    font-weight:500;
+    transition:background .3s var(--ease), border-color .3s var(--ease);
+  }
+  .rsvp-btn:hover{ background:rgba(198,161,91,.2); border-color:var(--gold); }
+  .rsvp-btn svg{ width:15px; height:15px; stroke:var(--gold); }
+
   @media (min-width:780px){
     .video-section{
       display:flex;
@@ -401,6 +426,12 @@
             <line x1="21" y1="8" x2="16" y2="13"></line>
           </svg>
         </button>
+        <a class="rsvp-btn" id="rsvpBtn" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
+            <path d="M20 6L9 17l-5-5"></path>
+          </svg>
+          RSVP
+        </a>
       </div>
     </section>
   </main>
@@ -424,6 +455,22 @@
     document.getElementById('guestBlock').classList.add('show');
     document.getElementById('captionName').textContent = guestName;
   }
+
+  // ---- RSVP button → Google Form, prefilled with the guest name ----
+  // TODO: swap these two placeholders for your real form.
+  //   1. RSVP_FORM_URL — open your form, click "Send" → link icon, copy the /viewform URL.
+  //   2. RSVP_NAME_ENTRY — in the form click ⋮ → "Get pre-filled link", type a dummy name,
+  //      submit, and copy the "entry.XXXXXXX" id from the resulting URL.
+  var RSVP_FORM_URL   = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform';
+  var RSVP_NAME_ENTRY = 'entry.123456789';
+  (function(){
+    var url = RSVP_FORM_URL;
+    if (guestName){
+      url += (url.indexOf('?') === -1 ? '?' : '&')
+           + 'usp=pp_url&' + RSVP_NAME_ENTRY + '=' + encodeURIComponent(guestName);
+    }
+    document.getElementById('rsvpBtn').href = url;
+  })();
 
   // ---- ambient sparks ----
   (function(){
