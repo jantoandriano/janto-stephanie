@@ -1,729 +1,470 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>The Wedding of Stephanie &amp; Janto</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Janto &amp; Stephanie — Save the Date</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Quicksand:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  /* ============================
-     TOKENS
-     ============================ */
   :root{
-    --ink:        #EDE6F5;   /* misty lilac — page base */
-    --ink-deep:   #F5EFF9;   /* pale moonlight */
-    --parchment:  #4A3F5E;   /* deep plum — primary text */
-    --gold:       #B0873C;   /* antique fairy-gold, readable on light */
-    --gold-soft:  rgba(176,135,60,.55);
-    --rose:       #D98BA0;   /* blush */
-    --charcoal:   #443A57;   /* body text */
-    --font-display: 'Cormorant Garamond', serif;
-    --font-body:    'Jost', sans-serif;
-    --ease: cubic-bezier(.65,0,.35,1);
+    --cream:#fbf3ef;
+    --cream-2:#f7e9e4;
+    --burgundy:#7a1f3d;
+    --burgundy-dark:#5c1530;
+    --rose:#e58fae;
+    --rose-light:#f2c1d5;
+    --teal:#234d4d;
+    --teal-light:#33685f;
+    --gold:#d9a441;
+    --sage:#7f9a72;
+    --ink:#3b2b30;
   }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;
+    background:linear-gradient(180deg,#efe0e6,#f7ece7 40%,#eef0e4);
+    font-family:'Nunito',sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    padding:24px 12px;
+  }
+  .stage-wrap{
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+  }
+  .stage{
+    position:relative;
+    width:min(92vw,400px);
+    aspect-ratio:9/16;
+    background:var(--cream);
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 18px 40px -12px rgba(90,30,50,0.35);
+  }
+  .progress{
+    position:absolute;top:10px;left:10px;right:10px;
+    display:flex;gap:6px;z-index:50;
+  }
+  .seg{
+    flex:1;height:3px;border-radius:3px;
+    background:rgba(255,255,255,0.55);
+    overflow:hidden;cursor:pointer;
+  }
+  .seg-fill{
+    height:100%;width:0%;background:var(--burgundy);
+    border-radius:3px;
+  }
+  .seg-fill.grow{animation:growfill linear forwards;}
+  .seg-fill.full{width:100%;}
+  @keyframes growfill{from{width:0%;}to{width:100%;}}
 
-  *{ box-sizing:border-box; margin:0; padding:0; }
-  html{
-    scroll-behavior:smooth;
-    scrollbar-width:none;       /* Firefox */
-    -ms-overflow-style:none;    /* old Edge/IE */
+  .tap-zone{
+    position:absolute;top:0;bottom:0;width:50%;z-index:40;
+    cursor:pointer;
   }
-  html::-webkit-scrollbar{ display:none; }  /* Chrome / Safari / new Edge */
-  body{
-    background:var(--ink);
-    color:var(--charcoal);
-    font-family:var(--font-body);
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-    scrollbar-width:none;
-    -ms-overflow-style:none;
-  }
-  body::-webkit-scrollbar{ display:none; }
-  img,video{ max-width:100%; display:block; }
-  a{ color:inherit; text-decoration:none; }
-  button{ font-family:inherit; cursor:pointer; border:none; background:none; }
+  .tap-left{left:0;}
+  .tap-right{right:0;}
 
-  :focus-visible{ outline:2px solid var(--gold); outline-offset:4px; }
+  .slide{
+    position:absolute;inset:0;
+    opacity:0;
+    transition:opacity .5s ease;
+    pointer-events:none;
+    display:flex;flex-direction:column;align-items:center;
+    padding:34px 22px 22px;
+    text-align:center;
+    overflow:hidden;
+  }
+  .slide.active{opacity:1;pointer-events:auto;}
+
+  .fade{opacity:0;transform:translateY(10px);}
+  .slide.active .fade{animation:fadeUp .7s ease forwards;}
+  .slide.active .fade.d1{animation-delay:.05s;}
+  .slide.active .fade.d2{animation-delay:.2s;}
+  .slide.active .fade.d3{animation-delay:.35s;}
+  .slide.active .fade.d4{animation-delay:.5s;}
+  .slide.active .fade.d5{animation-delay:.65s;}
+  @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
 
   .eyebrow{
-    font-family:var(--font-body);
-    font-size:.72rem;
-    letter-spacing:.28em;
-    text-transform:uppercase;
-    color:var(--gold);
-    font-weight:500;
+    font-family:'Alex Brush',cursive;
+    font-size:26px;color:var(--burgundy);
+    margin:0 0 2px;
   }
-  .eyebrow.center{ text-align:center; }
-
-  /* ============================
-     COVER
-     ============================ */
-  .cover{
-    position:relative;
-    height:100vh;
-    height:100svh;
-    min-height:560px;
-    width:100%;
-    background:var(--ink);
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    color:var(--parchment);
+  .title-names{
+    font-family:'Alex Brush',cursive;
+    font-size:58px;line-height:1.05;
+    color:var(--burgundy-dark);
+    margin:6px 0;
   }
 
-  /* Real background video goes here — see comment near <video class="cover-video"> below.
-     Until you add one, an animated gradient + drifting sparks stand in for it. */
-  .cover-video{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    opacity:.55;
+  /* garland top */
+  .garland{width:100%;position:absolute;top:0;left:0;}
+
+  /* floating sparkles & butterflies */
+  .sparkle{position:absolute;color:var(--gold);}
+  .sparkle svg{width:100%;height:100%;display:block;}
+  .twinkle{animation:twinkle 2.4s ease-in-out infinite;}
+  @keyframes twinkle{0%,100%{opacity:.35;transform:scale(.8);}50%{opacity:1;transform:scale(1.05);}}
+
+  .butterfly{position:absolute;animation:flutter 5s ease-in-out infinite;}
+  @keyframes flutter{
+    0%,100%{transform:translate(0,0) rotate(-4deg);}
+    50%{transform:translate(6px,-10px) rotate(6deg);}
   }
 
-  .cover-ambient{
-    position:absolute;
-    inset:0;
-    background:
-      radial-gradient(ellipse at 20% 20%, rgba(240,214,160,.45), transparent 55%),
-      radial-gradient(ellipse at 80% 85%, rgba(226,168,190,.42), transparent 55%),
-      linear-gradient(160deg, var(--ink-deep), var(--ink) 55%, #DCE8DD 100%);
-    background-size:220% 220%;
-    animation:driftBg 18s ease-in-out infinite;
+  /* arch portrait frame */
+  .arch-frame{position:relative;}
+  .ledge{fill:none;}
+
+  .names-lockup{
+    font-family:'Alex Brush',cursive;
+    font-size:34px;color:var(--burgundy-dark);
+    margin:14px 0 2px;
   }
-  @keyframes driftBg{
-    0%,100%{ background-position:0% 30%; }
-    50%{ background-position:100% 70%; }
+  .parent-label{
+    font-family:'Quicksand',sans-serif;
+    font-weight:600;font-size:13px;
+    color:var(--teal);letter-spacing:.02em;
+    margin:0 0 2px;
+  }
+  .parent-names{
+    font-family:'Nunito',sans-serif;
+    font-size:14.5px;color:var(--ink);
+    line-height:1.5;max-width:280px;
   }
 
-  .spark{
-    position:absolute;
-    bottom:-10px;
-    width:4px;
-    height:4px;
-    border-radius:50%;
-    background:var(--rose);
-    opacity:0;
-    box-shadow:0 0 6px rgba(217,139,160,.7);
-    filter:blur(.3px);
-    animation-name:floatUp;
-    animation-timing-function:linear;
-    animation-iteration-count:infinite;
+  .std-header{
+    font-family:'Alex Brush',cursive;
+    font-size:44px;color:var(--burgundy);
+    margin:8px 0 4px;
   }
-  @keyframes floatUp{
-    0%{ transform:translateY(0) translateX(0); opacity:0; }
-    10%{ opacity:.8; }
-    90%{ opacity:.5; }
-    100%{ transform:translateY(-110svh) translateX(var(--drift,20px)); opacity:0; }
+  .month-label{
+    font-family:'Quicksand',sans-serif;
+    font-weight:700;font-size:20px;
+    letter-spacing:.06em;color:var(--burgundy-dark);
+    margin:0 0 14px;
+  }
+  .cal-row{
+    display:flex;align-items:center;justify-content:center;gap:9px;
+    margin-bottom:18px;flex-wrap:wrap;
+  }
+  .cal-day{
+    font-family:'Quicksand',sans-serif;font-weight:600;
+    font-size:13px;color:var(--teal);
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+  }
+  .cal-day .num{font-size:15px;font-weight:700;color:var(--ink);}
+  .cal-hero{
+    width:64px;height:64px;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;
+    position:relative;flex-shrink:0;
+  }
+  .cal-hero svg{position:absolute;inset:0;width:100%;height:100%;}
+  .cal-hero .lbl{font-family:'Quicksand',sans-serif;font-weight:700;font-size:11px;color:var(--burgundy-dark);z-index:2;}
+  .cal-hero .num{font-family:'Quicksand',sans-serif;font-weight:700;font-size:20px;color:var(--burgundy-dark);z-index:2;}
+
+  .event-block{margin:10px 0 16px;max-width:300px;}
+  .event-title{
+    font-family:'Quicksand',sans-serif;font-weight:700;
+    font-size:15px;color:var(--rose);letter-spacing:.05em;
+    text-transform:uppercase;margin:0 0 4px;
+  }
+  .event-time{font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;color:var(--ink);margin:0 0 2px;}
+  .event-loc{
+    font-family:'Nunito',sans-serif;font-weight:700;font-size:14.5px;
+    color:var(--burgundy-dark);display:flex;align-items:center;gap:5px;justify-content:center;
   }
 
-  .cover-veil{
-    position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(237,230,245,0) 0%, rgba(237,230,245,.45) 100%);
-    pointer-events:none;
-  }
+  .bg-decor{position:absolute;inset:0;pointer-events:none;z-index:0;}
 
-  .cover-content{
-    position:relative;
-    z-index:2;
-    padding:0 1.5rem;
-    transition:opacity .9s var(--ease), transform .9s var(--ease);
+  .ig-header{
+    position:absolute;top:22px;left:12px;right:64px;z-index:45;
+    display:flex;align-items:center;gap:8px;
   }
-
-  .cover-content .eyebrow{ margin-bottom:.9rem; }
-
-  .couple-names{
-    font-family:var(--font-display);
-    font-weight:500;
-    font-style:italic;
-    font-size:clamp(2.6rem, 9vw, 4.6rem);
-    line-height:1.05;
-    letter-spacing:.01em;
-  }
-  .couple-names .amp{
-    display:inline-block;
-    color:var(--gold);
-    font-size:.75em;
-    padding:0 .1em;
-  }
-
-  .cover-date{
-    margin-top:1.1rem;
-    font-size:.85rem;
-    letter-spacing:.22em;
-    color:var(--gold-soft);
-  }
-
-  /* ---- personalized "to:" block, filled in by JS from the link's ?to= param ---- */
-  .guest-block{
-    display:none;
-    margin-top:1.7rem;
-  }
-  .guest-block.show{ display:block; }
-  .guest-name{
-    font-family:var(--font-display);
-    font-style:italic;
-    font-size:clamp(1.3rem, 4.5vw, 1.7rem);
-    margin-top:.3rem;
-    color:var(--parchment);
-  }
-
-  /* postage-stamp seal — perforated paper edge, inner frame, monogram + postmark */
-  .seal-btn{
-    --perf:6px;           /* notch radius */
-    --gap:15px;           /* spacing between notches */
-    position:relative;
-    width:142px; height:170px;
-    margin:2.6rem auto 0;
-    border:none;
-    padding:14px;
-    background:
-      linear-gradient(180deg, #FCF8FD, #F4ECF6 60%, #F1E7F4);
-    /* four edge masks intersected → notches on every side */
-    -webkit-mask:
-      radial-gradient(var(--perf) at 50% 0,    #0000 97%, #000) 50% 0    / var(--gap) 100% repeat-x,
-      radial-gradient(var(--perf) at 50% 100%, #0000 97%, #000) 50% 100% / var(--gap) 100% repeat-x,
-      radial-gradient(var(--perf) at 0 50%,    #0000 97%, #000) 0 50%    / 100% var(--gap) repeat-y,
-      radial-gradient(var(--perf) at 100% 50%, #0000 97%, #000) 100% 50% / 100% var(--gap) repeat-y;
-    -webkit-mask-composite:source-in;
-            mask:
-      radial-gradient(var(--perf) at 50% 0,    #0000 97%, #000) 50% 0    / var(--gap) 100% repeat-x,
-      radial-gradient(var(--perf) at 50% 100%, #0000 97%, #000) 50% 100% / var(--gap) 100% repeat-x,
-      radial-gradient(var(--perf) at 0 50%,    #0000 97%, #000) 0 50%    / 100% var(--gap) repeat-y,
-      radial-gradient(var(--perf) at 100% 50%, #0000 97%, #000) 100% 50% / 100% var(--gap) repeat-y;
-            mask-composite:intersect;
-    /* box-shadow is clipped by the mask, so lift with a drop-shadow filter */
-    filter:drop-shadow(0 10px 22px rgba(176,135,60,.22)) drop-shadow(0 3px 8px rgba(217,139,160,.18));
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:.4rem;
-    transition:transform .5s var(--ease), opacity .6s var(--ease), filter .45s var(--ease);
-  }
-  /* inner ruled frame just inside the perforations */
-  .seal-frame{
-    position:absolute; inset:11px;
-    border:1px solid var(--gold-soft);
-    pointer-events:none;
-  }
-  .seal-label{
-    position:relative;
-    z-index:1;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:.28rem;
-  }
-  .stamp-mono{
-    font-family:var(--font-display);
-    font-style:italic;
-    font-size:.82rem;
-    letter-spacing:.06em;
-    color:var(--gold);
-  }
-  .seal-verb{
-    font-family:var(--font-display);
-    font-style:italic;
-    font-weight:500;
-    font-size:1.7rem;
-    line-height:1;
-    color:var(--parchment);
-  }
-  .seal-sub{
-    font-family:var(--font-body);
-    font-size:.55rem;
-    letter-spacing:.2em;
-    text-transform:uppercase;
-    color:var(--gold);
-  }
-  /* faux circular postmark, top-right */
-  .stamp-postmark{
-    position:absolute;
-    top:16px; right:14px;
-    width:46px; height:46px;
-    border:1px solid var(--gold-soft);
-    border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    font-family:var(--font-body);
-    font-size:.42rem;
-    letter-spacing:.06em;
-    color:var(--gold);
-    opacity:.55;
-    transform:rotate(-12deg);
-    pointer-events:none;
-  }
-  .seal-btn:hover{
-    transform:translateY(-3px);
-    filter:drop-shadow(0 16px 30px rgba(217,139,160,.30)) drop-shadow(0 4px 10px rgba(176,135,60,.24));
-  }
-
-  .scroll-hint{
-    position:absolute;
-    bottom:2rem; left:50%;
-    transform:translateX(-50%);
-    z-index:2;
-    font-size:.68rem;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    color:var(--gold-soft);
-    transition:opacity .5s var(--ease);
-  }
-
-  /* neutral state shown when the ?g= code is missing from the guest list */
-  .invalid-note{
-    display:none;
-    margin:2rem auto 0;
-    max-width:300px;
-    font-family:var(--font-body);
-    font-size:.8rem;
-    line-height:1.7;
-    letter-spacing:.03em;
-    color:var(--parchment);
-    opacity:.85;
-  }
-  .cover.is-invalid .seal-btn,
-  .cover.is-invalid .guest-block,
-  .cover.is-invalid .cover-date,
-  .cover.is-invalid .scroll-hint{ display:none; }
-  .cover.is-invalid .invalid-note{ display:block; }
-
-  /* state when the seal has been opened */
-  .cover.is-open .cover-content{ opacity:0; transform:translateY(-16px) scale(.97); pointer-events:none; }
-  .cover.is-open .scroll-hint{ opacity:0; }
-  .cover.is-open .seal-btn{ transform:scale(1.4); opacity:0; }
-
-  /* ============================
-     MAIN INVITATION VIDEO
-     Fills the entire screen on mobile (this is where the schedule,
-     venue, RSVP info, and thank-you note all live now — inside the
-     video itself). On wider screens it sits in a phone-shaped frame
-     so it doesn't stretch into an oversized letterboxed rectangle.
-     ============================ */
-  main{ background:var(--ink-deep); }
-
-  .video-section{
-    position:relative;
-    width:100%;
-    height:100vh;
-    height:100svh;
-    background:var(--ink-deep);
+  .ig-avatar{
+    width:34px;height:34px;border-radius:50%;flex-shrink:0;
+    background:linear-gradient(135deg,var(--rose),var(--burgundy));
+    display:flex;align-items:center;justify-content:center;
+    border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.18);
     overflow:hidden;
   }
-
-  .video-inner{
-    position:relative;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:var(--ink);
+  .ig-avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+  .ig-avatar span{
+    font-family:'Quicksand',sans-serif;font-weight:700;font-size:12px;color:#fff;
+  }
+  .ig-text{text-align:left;min-width:0;}
+  .ig-title{
+    margin:0;font-family:'Quicksand',sans-serif;font-weight:700;font-size:11.5px;
+    color:var(--burgundy-dark);text-shadow:0 1px 4px rgba(255,255,255,0.85);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .ig-song{
+    margin:2px 0 0;font-family:'Nunito',sans-serif;font-weight:600;font-size:10.5px;
+    color:var(--teal);display:flex;align-items:center;gap:3px;
+    text-shadow:0 1px 4px rgba(255,255,255,0.85);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   }
 
-  .main-video{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    object-fit:cover;
+  .controls{
+    display:flex;gap:14px;align-items:center;
+    font-family:'Quicksand',sans-serif;font-size:13px;color:#7a5c66;
   }
-
-  .video-placeholder{
-    position:absolute; inset:0;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:.9rem;
-    color:var(--gold-soft);
-    padding:2rem;
-    text-align:center;
+  .btn{
+    border:1px solid var(--rose-light);background:#fff;
+    color:var(--burgundy);border-radius:20px;
+    padding:6px 14px;font-family:'Quicksand',sans-serif;
+    font-weight:600;font-size:13px;cursor:pointer;
   }
-  .video-placeholder svg{ width:34px; height:34px; opacity:.8; }
-  .video-placeholder p{
-    font-size:.78rem;
-    letter-spacing:.04em;
-    line-height:1.5;
-    max-width:240px;
-  }
-
-  /* personalized caption that fades over the video briefly when it starts */
-  .video-caption{
-    position:absolute;
-    top:9%;
-    left:50%;
-    transform:translateX(-50%);
-    z-index:3;
-    text-align:center;
-    padding:.7rem 1.6rem;
-    border-radius:2px;
-    background:linear-gradient(180deg, rgba(245,239,249,.65), transparent);
-    opacity:0;
-    transition:opacity 1s var(--ease);
-    pointer-events:none;
-  }
-  .video-caption.show{ opacity:1; }
-  .video-caption p{
-    font-family:var(--font-display);
-    font-style:italic;
-    color:var(--parchment);
-    font-size:clamp(1.1rem, 4vw, 1.4rem);
-    margin-top:.2rem;
-  }
-
-  /* minimal custom control — replaces the native browser video toolbar */
-  .mute-btn{
-    position:absolute;
-    right:16px;
-    bottom:max(16px, env(safe-area-inset-bottom));
-    z-index:4;
-    width:38px; height:38px;
-    border-radius:50%;
-    background:rgba(255,252,255,.55);
-    backdrop-filter:blur(3px);
-    border:1px solid rgba(176,135,60,.45);
-    display:flex; align-items:center; justify-content:center;
-  }
-  .mute-btn svg{ width:16px; height:16px; stroke:var(--parchment); }
-  .mute-btn .icon-muted{ display:none; }
-  .mute-btn.is-muted .icon-on{ display:none; }
-  .mute-btn.is-muted .icon-muted{ display:block; }
-
-  /* RSVP pill — mirrors the mute button, sits bottom-left over the video */
-  .rsvp-btn{
-    position:absolute;
-    left:16px;
-    bottom:max(16px, env(safe-area-inset-bottom));
-    z-index:4;
-    display:inline-flex;
-    align-items:center;
-    gap:.5rem;
-    padding:.6rem 1.15rem;
-    border-radius:999px;
-    background:rgba(255,252,255,.55);
-    backdrop-filter:blur(3px);
-    border:1px solid rgba(176,135,60,.45);
-    color:var(--parchment);
-    font-family:var(--font-body);
-    font-size:.72rem;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    font-weight:500;
-    transition:background .3s var(--ease), border-color .3s var(--ease);
-  }
-  .rsvp-btn:hover{ background:rgba(176,135,60,.18); border-color:var(--gold); }
-  .rsvp-btn svg{ width:15px; height:15px; stroke:var(--gold); }
-
-  @media (min-width:780px){
-    .video-section{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:3rem;
-    }
-    .video-inner{
-      width:min(420px, 92vw);
-      aspect-ratio:9/19.5;
-      height:auto;
-      border-radius:38px;
-      border:1px solid rgba(176,135,60,.3);
-      box-shadow:0 30px 80px rgba(150,130,175,.28);
-    }
-  }
-
+  .btn:hover{background:var(--cream-2);}
   @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior:auto; }
-    .cover-ambient, .spark{ animation:none !important; }
+    .twinkle,.butterfly,.seg-fill.grow{animation:none !important;}
   }
 </style>
 </head>
 <body>
+<div class="stage-wrap">
+  <div class="stage" id="stage">
+    <div class="progress" id="progress"></div>
 
-  <!-- ============================
-       COVER
-       Swap in a real ambient/background video by uncommenting the
-       <source> line below and pointing it at your file. Until then,
-       the animated gradient + drifting sparks behind it fill the space.
-       ============================ -->
-  <section class="cover" id="cover">
-    <video class="cover-video" id="coverVideo" autoplay muted loop playsinline>
-      <!-- <source src="assets/videos/cover-background.mp4" type="video/mp4"> -->
-    </video>
-    <div class="cover-ambient" aria-hidden="true"></div>
-    <div class="cover-veil"></div>
-
-    <div class="cover-content">
-      <p class="eyebrow">The Wedding Of</p>
-      <h1 class="couple-names">Stephanie<span class="amp">&amp;</span>Janto</h1>
-      <p class="cover-date">SUNDAY · 03 January 2027</p>
-
-      <div class="guest-block" id="guestBlock">
-        <p class="eyebrow">To</p>
-        <p class="guest-name" id="guestName"></p>
+    <!-- Instagram-story-style header: avatar, title, song (edit text below to customize) -->
+    <div class="ig-header">
+      <div class="ig-avatar">
+        <!-- Swap the <span> for <img src="your-photo.jpg" alt=""> to use a real profile picture -->
+        <span>J&amp;S</span>
       </div>
-
-      <button class="seal-btn" id="openBtn" aria-label="Open the wedding invitation">
-        <span class="seal-frame" aria-hidden="true"></span>
-        <span class="stamp-postmark" aria-hidden="true">03·01·27</span>
-        <span class="seal-label">
-          <span class="stamp-mono">S &amp; J</span>
-          <span class="seal-verb">Open</span>
-          <span class="seal-sub">the invitation</span>
-        </span>
-      </button>
-
-      <p class="invalid-note" id="invalidNote">
-        This invitation link isn&rsquo;t valid.<br>
-        Please use the personal link sent to you, or reach out to Stephanie &amp; Janto.
-      </p>
+      <div class="ig-text">
+        <p class="ig-title">the wedding of janto and stephanie</p>
+        <p class="ig-song">♪ <span id="songName">Perfect — Ed Sheeran</span></p>
+      </div>
     </div>
 
-    <p class="scroll-hint" id="scrollHint">Tap the seal to begin</p>
-  </section>
 
-  <main id="mainContent">
-    <!-- ============================
-         MAIN INVITATION VIDEO
-         Uncomment the <source> line and point it at your real file
-         (e.g. main-invitation.mp4). This one video now carries the
-         schedule, venue, and RSVP info, so there's nothing else on
-         the page below the cover.
-         ============================ -->
-    <section class="video-section">
-      <div class="video-inner" id="videoInner">
-        <video class="main-video" id="mainVideo" playsinline preload="metadata">
-          <!-- <source src="assets/videos/main-invitation.mp4" type="video/mp4"> -->
-        </video>
-        <div class="video-placeholder" id="videoPlaceholder">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-            <polygon points="10 8 16 12 10 16 10 8"></polygon>
-            <rect x="3" y="4" width="18" height="16" rx="2"></rect>
-          </svg>
-          <p>Your invitation video will appear here — add your file to replace this placeholder</p>
-        </div>
-        <div class="video-caption" id="videoCaption">
-          <p class="eyebrow" style="color:var(--gold)">For</p>
-          <p id="captionName"></p>
-        </div>
-        <button class="mute-btn" id="muteBtn" aria-label="Mute or unmute video">
-          <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
-            <polygon points="4 9 8 9 12 5 12 19 8 15 4 15 4 9"></polygon>
-            <path d="M16 8a5 5 0 0 1 0 8"></path>
-          </svg>
-          <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
-            <polygon points="4 9 8 9 12 5 12 19 8 15 4 15 4 9"></polygon>
-            <line x1="16" y1="8" x2="21" y2="13"></line>
-            <line x1="21" y1="8" x2="16" y2="13"></line>
-          </svg>
-        </button>
-        <a class="rsvp-btn" id="rsvpBtn" href="#" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
-            <path d="M20 6L9 17l-5-5"></path>
-          </svg>
-          RSVP
-        </a>
+    <!-- SLIDE 1: TITLE -->
+    <div class="slide" data-duration="4200">
+      <svg class="garland" viewBox="0 0 400 130" preserveAspectRatio="none">
+        <path d="M0 10 Q60 40 120 15 T240 20 T400 5 V0 H0 Z" fill="#7f9a72" opacity="0.55"/>
+        <path d="M0 0 Q80 55 160 25 T320 30 T400 0 V0 H0 Z" fill="#9db98e" opacity="0.5"/>
+        <g fill="#d9a441"><circle cx="40" cy="30" r="7"/><circle cx="70" cy="18" r="6"/><circle cx="330" cy="20" r="7"/><circle cx="300" cy="32" r="6"/></g>
+        <g fill="#e58fae"><circle cx="150" cy="14" r="6"/><circle cx="250" cy="18" r="6"/><circle cx="55" cy="35" r="5"/><circle cx="345" cy="35" r="5"/></g>
+      </svg>
+
+      <div class="butterfly" style="top:120px;left:26px;width:34px;height:26px;">
+        <svg viewBox="0 0 40 30"><path d="M20 15 C10 -5 -5 0 5 15 C-5 30 10 35 20 15 Z" fill="#8fb7e0"/><path d="M20 15 C30 -5 45 0 35 15 C45 30 30 35 20 15 Z" fill="#e6c866"/></svg>
       </div>
-    </section>
-  </main>
+      <div class="sparkle twinkle" style="top:150px;right:36px;width:20px;height:20px;">
+        <svg viewBox="0 0 20 20"><path d="M10 0 L12 8 L20 10 L12 12 L10 20 L8 12 L0 10 L8 8 Z" fill="var(--gold)"/></svg>
+      </div>
+
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <p class="eyebrow fade d1">The Wedding of</p>
+        <h1 class="title-names fade d2">Janto<br>&amp; Stephanie</h1>
+        <div class="sparkle twinkle fade d3" style="position:relative;width:16px;height:16px;margin-top:6px;">
+          <svg viewBox="0 0 20 20"><path d="M10 0 L12 8 L20 10 L12 12 L10 20 L8 12 L0 10 L8 8 Z" fill="var(--burgundy)"/></svg>
+        </div>
+      </div>
+
+      <svg class="fade d4" width="90" height="70" viewBox="0 0 90 70">
+        <path d="M45 70 C45 40 45 20 45 15" stroke="#7f9a72" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <ellipse cx="45" cy="12" rx="16" ry="11" fill="#e6c866"/>
+        <circle cx="45" cy="12" r="4" fill="#a5661f"/>
+      </svg>
+    </div>
+
+    <!-- SLIDE 2: PORTRAIT DUET + FOUNTAIN -->
+    <div class="slide" data-duration="4200">
+      <div class="sparkle twinkle fade d1" style="top:10px;left:50%;transform:translateX(-50%);width:22px;height:22px;">
+        <svg viewBox="0 0 20 20"><path d="M10 0 C10 8 14 10 20 10 C14 10 10 12 10 20 C10 12 6 10 0 10 C6 10 10 8 10 0 Z" fill="var(--rose)"/></svg>
+      </div>
+
+      <div style="display:flex;gap:14px;margin-top:34px;" class="fade d2">
+        <svg class="arch-frame" width="118" height="150" viewBox="0 0 118 150">
+          <path d="M10 140 L10 62 A49 49 0 0 1 108 62 L108 140 Z" fill="var(--teal)" stroke="var(--rose)" stroke-width="6"/>
+          <rect x="6" y="138" width="106" height="8" rx="3" fill="var(--rose)"/>
+          <!-- bride mini -->
+          <path d="M59 70 c-16 0 -22 16 -22 30 l0 30 l44 0 l0 -30 c0 -14 -6 -30 -22 -30z" fill="#fff"/>
+          <circle cx="59" cy="80" r="13" fill="#f0c8a6"/>
+          <path d="M46 76 q13 -16 26 0 q3 10 -3 16 q-10 -4 -20 0 q-6 -6 -3 -16z" fill="#ffffff" opacity="0.9"/>
+        </svg>
+        <svg class="arch-frame" width="118" height="150" viewBox="0 0 118 150">
+          <path d="M10 140 L10 62 A49 49 0 0 1 108 62 L108 140 Z" fill="var(--teal)" stroke="var(--rose)" stroke-width="6"/>
+          <rect x="6" y="138" width="106" height="8" rx="3" fill="var(--rose)"/>
+          <!-- groom mini -->
+          <path d="M40 100 q19 -12 38 0 l0 30 l-38 0z" fill="#fdfdfd"/>
+          <circle cx="59" cy="80" r="13" fill="#e8b489"/>
+          <path d="M47 71 q12 -10 24 0 q1 -9 -12 -10 q-13 1 -12 10z" fill="#2b2320"/>
+        </svg>
+      </div>
+
+      <p class="fade d3" style="font-family:'Alex Brush',cursive;font-size:22px;color:var(--burgundy);margin:14px 0 0;">Stephanie &amp; Janto</p>
+
+      <svg class="fade d4" width="150" height="140" viewBox="0 0 150 140" style="margin-top:auto;">
+        <ellipse cx="75" cy="128" rx="60" ry="9" fill="#e9c9a8" opacity="0.6"/>
+        <path d="M55 128 Q75 120 95 128 L92 90 Q75 96 58 90 Z" fill="#e9c9a8"/>
+        <path d="M60 90 Q75 96 90 90 L87 62 Q75 68 63 62 Z" fill="#e9c9a8"/>
+        <rect x="70" y="30" width="10" height="34" fill="#e9c9a8"/>
+        <g stroke="#8fb7e0" stroke-width="2" fill="none" stroke-linecap="round">
+          <line class="drip d-a" x1="60" y1="70" x2="58" y2="86"/>
+          <line class="drip d-b" x1="75" y1="66" x2="75" y2="88"/>
+          <line class="drip d-c" x1="90" y1="70" x2="92" y2="86"/>
+          <line class="drip d-a" x1="65" y1="98" x2="62" y2="118"/>
+          <line class="drip d-b" x1="85" y1="98" x2="88" y2="118"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- SLIDE 3: BRIDE -->
+    <div class="slide" data-duration="4200">
+      <div class="sparkle twinkle fade d1" style="top:14px;left:20px;width:20px;height:20px;">
+        <svg viewBox="0 0 20 20"><path d="M10 0 L12 8 L20 10 L12 12 L10 20 L8 12 L0 10 L8 8 Z" fill="var(--gold)"/></svg>
+      </div>
+      <svg class="fade d2" width="140" height="170" viewBox="0 0 140 170" style="margin-top:26px;">
+        <path d="M14 160 L14 74 A56 56 0 0 1 126 74 L126 160 Z" fill="var(--teal)" stroke="var(--rose)" stroke-width="7"/>
+        <rect x="9" y="157" width="122" height="10" rx="4" fill="var(--rose)"/>
+        <path d="M70 82 c-19 0 -27 19 -27 36 l0 40 l54 0 l0 -40 c0 -17 -8 -36 -27 -36z" fill="#ffffff"/>
+        <circle cx="70" cy="94" r="16" fill="#f0c8a6"/>
+        <path d="M54 88 q16 -20 32 0 q4 12 -4 20 q-12 -5 -24 0 q-8 -8 -4 -20z" fill="#fdfdfd" opacity="0.95"/>
+        <path d="M62 94 q8 6 16 0" stroke="#8a5a3b" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </svg>
+      <p class="names-lockup fade d3">Stephanie Parera</p>
+      <p class="parent-label fade d4">Putri dari</p>
+      <p class="parent-names fade d4">Bapak Billy Parera &amp;<br>Ibu Jeanny Boyoh</p>
+    </div>
+
+    <!-- SLIDE 4: GROOM -->
+    <div class="slide" data-duration="4200">
+      <div class="sparkle twinkle fade d1" style="top:14px;right:20px;width:20px;height:20px;">
+        <svg viewBox="0 0 20 20"><path d="M10 0 L12 8 L20 10 L12 12 L10 20 L8 12 L0 10 L8 8 Z" fill="var(--gold)"/></svg>
+      </div>
+      <svg class="fade d2" width="140" height="170" viewBox="0 0 140 170" style="margin-top:26px;">
+        <path d="M14 160 L14 74 A56 56 0 0 1 126 74 L126 160 Z" fill="var(--teal)" stroke="var(--rose)" stroke-width="7"/>
+        <rect x="9" y="157" width="122" height="10" rx="4" fill="var(--rose)"/>
+        <path d="M46 120 q24 -15 48 0 l0 40 l-48 0z" fill="#fdfdfd"/>
+        <path d="M64 120 l6 8 l6 -8" stroke="#dcdcdc" stroke-width="2" fill="none"/>
+        <circle cx="70" cy="94" r="16" fill="#e8b489"/>
+        <path d="M55 84 q15 -13 30 0 q1 -11 -15 -12 q-16 1 -15 12z" fill="#241d1a"/>
+      </svg>
+      <p class="names-lockup fade d3">Janto Motulo</p>
+      <p class="parent-label fade d4">Putra dari</p>
+      <p class="parent-names fade d4">Bapak Jansen Motulo &amp;<br>Ibu Tilly Pijoh</p>
+    </div>
+
+    <!-- SLIDE 5: SAVE THE DATE -->
+    <div class="slide" data-duration="6500" style="justify-content:flex-start;padding-top:44px;">
+      <div class="butterfly" style="top:6px;right:22px;width:28px;height:22px;">
+        <svg viewBox="0 0 40 30"><path d="M20 15 C10 -5 -5 0 5 15 C-5 30 10 35 20 15 Z" fill="#e6a8c2"/><path d="M20 15 C30 -5 45 0 35 15 C45 30 30 35 20 15 Z" fill="#8fb7e0"/></svg>
+      </div>
+      <h2 class="std-header fade d1">Save the Date</h2>
+      <p class="month-label fade d1">JANUARI 2027</p>
+
+      <div class="cal-row fade d2">
+        <div class="cal-hero">
+          <svg viewBox="0 0 64 64"><path d="M32 4 C14 4 4 16 4 32 C4 48 14 60 32 60 C50 60 60 48 60 32 C60 16 50 4 32 4 Z" fill="none" stroke="var(--burgundy)" stroke-width="3"/></svg>
+          <span class="lbl">MINGGU</span><span class="num">3</span>
+        </div>
+        <div class="cal-day"><span>Sen</span><span class="num">4</span></div>
+        <div class="cal-day"><span>Sel</span><span class="num">5</span></div>
+        <div class="cal-day"><span>Rab</span><span class="num">6</span></div>
+        <div class="cal-day"><span>Kam</span><span class="num">7</span></div>
+        <div class="cal-day"><span>Jum</span><span class="num">8</span></div>
+        <div class="cal-day"><span>Sab</span><span class="num">9</span></div>
+      </div>
+
+      <div class="event-block fade d3">
+        <p class="event-title">Pemberkatan Nikah</p>
+        <p class="event-time">Pukul 10.00 WITA</p>
+        <p class="event-loc">📍 Gereja GMIM "Rut" Woloan</p>
+      </div>
+
+      <div class="event-block fade d4">
+        <p class="event-title">Resepsi</p>
+        <p class="event-time">Pukul 12.00 WITA</p>
+        <p class="event-loc">📍 Jhoanie</p>
+      </div>
+
+      <svg class="fade d5" width="90" height="60" viewBox="0 0 90 60" style="margin-top:auto;">
+        <path d="M45 60 C45 35 45 20 45 15" stroke="#7f9a72" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <ellipse cx="45" cy="12" rx="16" ry="11" fill="#e58fae"/>
+        <circle cx="45" cy="12" r="4" fill="#7a1f3d"/>
+      </svg>
+    </div>
+
+    <div class="tap-zone tap-left" onclick="go(-1)"></div>
+    <div class="tap-zone tap-right" onclick="go(1)"></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="playBtn" onclick="togglePlay()">Pause</button>
+    <span>Tap sides to navigate</span>
+  </div>
+</div>
 
 <script>
-  // ============================================================
-  //  GUEST LIST  —  the only names that get a personalized invite
-  //  ------------------------------------------------------------
-  //  Each guest gets a private code; their link is  yoursite.com/?g=CODE
-  //  Add one line per guest below:  code : 'Full Name'.
-  //
-  //  Pick codes that are hard to guess (6+ random chars), e.g.
-  //  the sample ones below. Give each guest ONLY their own link.
-  //
-  //  NOTE: because this is a static page with no server, the list
-  //  still lives in the page source — anyone opening DevTools can
-  //  read it. This stops casual link-editing / param-swapping; it
-  //  is not a hard security wall. The reception's own name check
-  //  at the door remains the real gate.
-  // ============================================================
+  const slides = document.querySelectorAll('.slide');
+  const progressEl = document.getElementById('progress');
+  let current = 0;
+  let playing = true;
+  let timer = null;
 
-  var GUESTS = {
-    'r45bvv': 'Julio Kolopitawondal',
-    'z16na1': 'Ayu Gracia',
-    '5pii8r': 'Dyah Annisa',
-    '51yq04': 'Jelia Lolindu',
-    '0og6y7': 'Adinda Manueke',
-    '0c38nb': 'Adityano Ratu',
-    'p8uv5n': 'Dipta P',
-    'p1jx86': 'Hendriawan Jumawan',
-    'fd233t': 'Patricia Adam',
-    'inzahv': 'Raisa Maringka',
-    'w2pxq6': 'Ryan J',
-    'qgbisy': 'Elwene Lintong',
-    'o38f71': 'Julia Wowor',
-    'rhtj95': 'Astrid Mongi',
-    '4bdw2l': 'Switly Mait',
-    'kany8m': 'Erik Parera',
-    'vxbd2n': 'Clara Warouw',
-    'kwblxv': 'Michelle Surentu',
-    'h44eui': 'Nata',
-    'r8brzk': 'Aney Turambi',
-    'all76f': 'Ling-ling',
-    '6dvnlj': 'Martino',
-    'jxjlsi': 'Grady Wantah',
-    '4ez2fg': 'Junior Lakat',
-    '6oh6xw': 'Aron Kaligis',
-    'kq6t80': 'Billy Rewah',
-    '6nayyh': 'Haryo Hartoyo',
-    'j8n1ud': 'Mariska Tanauma',
-    't5psam': 'Monica Tangka',
-    'eb5j8n': 'Ai',
-    'dic1ve': 'Nikita Lengkey',
-    'dnasez': 'Pingkan Kenda',
-    'ejz7zd': 'Stevani Andries',
-    '9nr3de': 'Kezi Pangemanan',
-    '1b8zg7': 'Richi Lala',
-    '0fo5ux': 'Valdo Palenewen',
-    'vd4nan': 'Henry Burhan & Jes',
-    's144ik': 'Ziby Makalew',
-    'ibioln': 'Cika',
-    'k9xke2': 'Ecei',
-    '5gj8oo': 'Stevan',
-    'uunf5c': 'Maynard',
-    'y9p3oa': 'Riry',
-    'fv58eh': 'Jojo',
-    '4e39mt': 'Seyla',
-    'r7bgoq': 'Abe',
-    'uyph5k': 'Beny',
-    '68qr9x': 'Ipin',
-    'hro05h': 'Del',
-    'zfmi3l': 'Ika Pankey',
-    '08am87': 'Ika Kason',
-    '6wjb9k': 'Yoga',
-    'ziwf5i': 'Cindry',
-    'wfxuxn': 'Tinut',
-    'tjj8rm': 'Gead',
-    '090jl6': 'Ifer',
-    'xviguk': 'Dada',
-    'pd2vmg': 'Mas Aiko',
-  };
-  
-  // ---- read the invite code from the link, e.g. yoursite.com/?g=k7f2a9 ----
-  var inviteCode = (new URLSearchParams(window.location.search).get('g') || '').trim();
-  var guestName = null;
-  var invalidInvite = false;
+  slides.forEach((s,i)=>{
+    const seg = document.createElement('div');
+    seg.className='seg';
+    seg.onclick=(e)=>{e.stopPropagation();jumpTo(i);};
+    const fill = document.createElement('div');
+    fill.className='seg-fill';
+    fill.dataset.idx=i;
+    seg.appendChild(fill);
+    progressEl.appendChild(seg);
+  });
+  const fills = document.querySelectorAll('.seg-fill');
 
-  if (inviteCode){
-    if (Object.prototype.hasOwnProperty.call(GUESTS, inviteCode)){
-      guestName = GUESTS[inviteCode];
-    } else {
-      // code present but not on the list → block, show neutral message
-      invalidInvite = true;
-    }
-  }
-  // (no code at all → generic invite: names + seal, but no personalized "To:")
-
-  if (invalidInvite){
-    document.getElementById('cover').classList.add('is-invalid');
-  } else if (guestName){
-    document.getElementById('guestName').textContent = guestName;
-    document.getElementById('guestBlock').classList.add('show');
-    document.getElementById('captionName').textContent = guestName;
+  function render(){
+    slides.forEach((s,i)=>s.classList.toggle('active', i===current));
+    fills.forEach((f,i)=>{
+      f.classList.remove('grow','full');
+      f.style.animationDuration='';
+      if(i<current){ f.classList.add('full'); }
+      else if(i===current){
+        f.style.width='0%';
+        void f.offsetWidth;
+        const dur = slides[current].dataset.duration || 4000;
+        f.style.animationDuration = dur+'ms';
+        f.classList.add('grow');
+      } else {
+        f.style.width='0%';
+      }
+    });
   }
 
-  // ---- RSVP button → Google Form ----
-  //  Form: https://forms.gle/nsnKdqSS8TMA3Z9a8  (resolved to the /viewform URL below)
-  //
-  //  OPTIONAL name prefill: to auto-fill the guest's name into the form's
-  //  "What are the names of people attending?" field, put its entry id in
-  //  RSVP_NAME_ENTRY below. To find it: open the form → ⋮ menu →
-  //  "Get pre-filled link" → type any name in that field → "Get link" → copy
-  //  the entry.XXXXXXX from the URL it gives you. Leave it '' to just open the
-  //  blank form (guest types their own name).
-  var RSVP_FORM_URL   = 'https://docs.google.com/forms/d/e/1FAIpQLScWu-VI0XFzGH-HxtOQJRL5R8c9BN-IjrU79B0zQteBrMduCA/viewform';
-  var RSVP_NAME_ENTRY = ''; // e.g. 'entry.123456789'
-  (function(){
-    var url = RSVP_FORM_URL;
-    if (guestName && RSVP_NAME_ENTRY){
-      url += (url.indexOf('?') === -1 ? '?' : '&')
-           + 'usp=pp_url&' + RSVP_NAME_ENTRY + '=' + encodeURIComponent(guestName);
-    }
-    document.getElementById('rsvpBtn').href = url;
-  })();
+  function scheduleNext(){
+    clearTimeout(timer);
+    if(!playing) return;
+    const dur = parseInt(slides[current].dataset.duration || 4000, 10);
+    timer = setTimeout(()=>{ go(1); }, dur);
+  }
 
-  // ---- ambient sparks ----
-  (function(){
-    var ambient = document.querySelector('.cover-ambient');
-    var count = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 22;
-    for (var i = 0; i < count; i++){
-      var s = document.createElement('span');
-      s.className = 'spark';
-      s.style.left = (Math.random()*100) + '%';
-      s.style.setProperty('--drift', (Math.random()*40-20) + 'px');
-      s.style.animationDuration = (7 + Math.random()*8) + 's';
-      s.style.animationDelay = (Math.random()*10) + 's';
-      ambient.appendChild(s);
-    }
-  })();
+  function go(dir){
+    current = (current + dir + slides.length) % slides.length;
+    render();
+    scheduleNext();
+  }
 
-  // ---- open the invitation ----
-  var cover = document.getElementById('cover');
-  var openBtn = document.getElementById('openBtn');
-  var mainVideo = document.getElementById('mainVideo');
-  var coverVideo = document.getElementById('coverVideo');
+  function jumpTo(i){
+    current = i;
+    render();
+    scheduleNext();
+  }
 
-  openBtn.addEventListener('click', function(){
-    cover.classList.add('is-open');
+  function togglePlay(){
+    playing = !playing;
+    document.getElementById('playBtn').textContent = playing ? 'Pause' : 'Play';
+    if(playing){ scheduleNext(); } else { clearTimeout(timer); }
+  }
 
-    // Try to autoplay the main video now — this click is a genuine user
-    // gesture, so browsers will allow audio (unlike autoplay on page load).
-    if (mainVideo.querySelector('source')) {
-      mainVideo.play().catch(function(){ /* ignored: user can hit play manually */ });
-    }
-
-    setTimeout(function(){
-      document.getElementById('mainContent').scrollIntoView({ behavior:'smooth' });
-    }, 350);
-
-    // Once the seal animation + scroll finish, the cover is off-screen, so
-    // clear the "is-open" state. That restores the cover to its full look
-    // (names + seal) for when the guest scrolls back up to it.
-    setTimeout(function(){
-      cover.classList.remove('is-open');
-    }, 1100);
-  });
-
-  // ---- hide the video placeholder once a real source loads ----
-  var placeholder = document.getElementById('videoPlaceholder');
-  mainVideo.addEventListener('loadeddata', function(){ placeholder.style.display = 'none'; });
-  coverVideo.addEventListener('loadeddata', function(){ coverVideo.style.opacity = '.55'; });
-
-  // ---- no native toolbar, so tapping the video toggles play/pause ----
-  var videoInner = document.getElementById('videoInner');
-  videoInner.addEventListener('click', function(e){
-    if (e.target.closest('#muteBtn')) return; // let the mute button handle its own tap
-    if (!mainVideo.querySelector('source')) return;
-    if (mainVideo.paused){ mainVideo.play().catch(function(){}); }
-    else{ mainVideo.pause(); }
-  });
-
-  // ---- custom mute toggle, replaces the native volume control ----
-  var muteBtn = document.getElementById('muteBtn');
-  muteBtn.addEventListener('click', function(e){
-    e.stopPropagation();
-    mainVideo.muted = !mainVideo.muted;
-    muteBtn.classList.toggle('is-muted', mainVideo.muted);
-  });
-
-  // ---- show the "for [name]" caption once, the first time the video plays ----
-  var captionShown = false;
-  var videoCaption = document.getElementById('videoCaption');
-  mainVideo.addEventListener('play', function(){
-    if (captionShown || !guestName) return;
-    captionShown = true;
-    videoCaption.classList.add('show');
-    setTimeout(function(){ videoCaption.classList.remove('show'); }, 4500);
-  });
+  render();
+  scheduleNext();
 </script>
-
 </body>
 </html>
