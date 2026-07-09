@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Wedding of Ayu &amp; Bagas</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================
+     TOKENS
+     ============================ */
+  :root{
+    --ink:        #16241C;
+    --ink-deep:   #0D1611;
+    --parchment:  #F6EFE2;
+    --gold:       #C6A15B;
+    --gold-soft:  rgba(198,161,91,.35);
+    --rose:       #C98A7D;
+    --charcoal:   #2B2620;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body:    'Jost', sans-serif;
+    --ease: cubic-bezier(.65,0,.35,1);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{
+    scroll-behavior:smooth;
+    scrollbar-width:none;       /* Firefox */
+    -ms-overflow-style:none;    /* old Edge/IE */
+  }
+  html::-webkit-scrollbar{ display:none; }  /* Chrome / Safari / new Edge */
+  body{
+    background:var(--ink);
+    color:var(--charcoal);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+  }
+  body::-webkit-scrollbar{ display:none; }
+  img,video{ max-width:100%; display:block; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; border:none; background:none; }
+
+  :focus-visible{ outline:2px solid var(--gold); outline-offset:4px; }
+
+  .eyebrow{
+    font-family:var(--font-body);
+    font-size:.72rem;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:500;
+  }
+  .eyebrow.center{ text-align:center; }
+
+  /* ============================
+     COVER
+     ============================ */
+  .cover{
+    position:relative;
+    height:100vh;
+    height:100svh;
+    min-height:560px;
+    width:100%;
+    background:var(--ink);
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:var(--parchment);
+  }
+
+  /* Real background video goes here — see comment near <video class="cover-video"> below.
+     Until you add one, an animated gradient + drifting sparks stand in for it. */
+  .cover-video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:.55;
+  }
+
+  .cover-ambient{
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(198,161,91,.16), transparent 55%),
+      radial-gradient(ellipse at 80% 85%, rgba(201,138,125,.14), transparent 55%),
+      linear-gradient(160deg, var(--ink-deep), var(--ink) 55%, #1c2e22 100%);
+    background-size:220% 220%;
+    animation:driftBg 18s ease-in-out infinite;
+  }
+  @keyframes driftBg{
+    0%,100%{ background-position:0% 30%; }
+    50%{ background-position:100% 70%; }
+  }
+
+  .spark{
+    position:absolute;
+    bottom:-10px;
+    width:4px;
+    height:4px;
+    border-radius:50%;
+    background:var(--gold);
+    opacity:0;
+    filter:blur(.3px);
+    animation-name:floatUp;
+    animation-timing-function:linear;
+    animation-iteration-count:infinite;
+  }
+  @keyframes floatUp{
+    0%{ transform:translateY(0) translateX(0); opacity:0; }
+    10%{ opacity:.8; }
+    90%{ opacity:.5; }
+    100%{ transform:translateY(-110svh) translateX(var(--drift,20px)); opacity:0; }
+  }
+
+  .cover-veil{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(13,22,17,.15) 0%, rgba(13,22,17,.55) 100%);
+    pointer-events:none;
+  }
+
+  .cover-content{
+    position:relative;
+    z-index:2;
+    padding:0 1.5rem;
+    transition:opacity .9s var(--ease), transform .9s var(--ease);
+  }
+
+  .cover-content .eyebrow{ margin-bottom:.9rem; }
+
+  .couple-names{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-style:italic;
+    font-size:clamp(2.6rem, 9vw, 4.6rem);
+    line-height:1.05;
+    letter-spacing:.01em;
+  }
+  .couple-names .amp{
+    display:inline-block;
+    color:var(--gold);
+    font-size:.75em;
+    padding:0 .1em;
+  }
+
+  .cover-date{
+    margin-top:1.1rem;
+    font-size:.85rem;
+    letter-spacing:.22em;
+    color:var(--gold-soft);
+  }
+
+  /* ---- personalized "to:" block, filled in by JS from the link's ?to= param ---- */
+  .guest-block{
+    display:none;
+    margin-top:1.7rem;
+  }
+  .guest-block.show{ display:block; }
+  .guest-name{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-size:clamp(1.3rem, 4.5vw, 1.7rem);
+    margin-top:.3rem;
+    color:var(--parchment);
+  }
+
+  .seal-btn{
+    position:relative;
+    width:112px; height:112px;
+    margin:2.4rem auto 0;
+    border-radius:50%;
+    border:1px solid var(--gold-soft);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--parchment);
+    transition:transform .5s var(--ease), opacity .6s var(--ease);
+  }
+  .seal-ring{
+    position:absolute; inset:-10px;
+    border:1px solid var(--gold-soft);
+    border-radius:50%;
+    animation:spin 22s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .seal-label{
+    font-family:var(--font-body);
+    font-size:.68rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    line-height:1.5;
+  }
+  .seal-btn:hover .seal-label{ color:var(--gold); }
+
+  .scroll-hint{
+    position:absolute;
+    bottom:2rem; left:50%;
+    transform:translateX(-50%);
+    z-index:2;
+    font-size:.68rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    transition:opacity .5s var(--ease);
+  }
+
+  /* state when the seal has been opened */
+  .cover.is-open .cover-content{ opacity:0; transform:translateY(-16px) scale(.97); pointer-events:none; }
+  .cover.is-open .scroll-hint{ opacity:0; }
+  .cover.is-open .seal-btn{ transform:scale(1.4); opacity:0; }
+
+  /* ============================
+     MAIN INVITATION VIDEO
+     Fills the entire screen on mobile (this is where the schedule,
+     venue, RSVP info, and thank-you note all live now — inside the
+     video itself). On wider screens it sits in a phone-shaped frame
+     so it doesn't stretch into an oversized letterboxed rectangle.
+     ============================ */
+  main{ background:var(--ink-deep); }
+
+  .video-section{
+    position:relative;
+    width:100%;
+    height:100vh;
+    height:100svh;
+    background:var(--ink-deep);
+    overflow:hidden;
+  }
+
+  .video-inner{
+    position:relative;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:var(--ink);
+  }
+
+  .main-video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+
+  .video-placeholder{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:.9rem;
+    color:var(--gold-soft);
+    padding:2rem;
+    text-align:center;
+  }
+  .video-placeholder svg{ width:34px; height:34px; opacity:.8; }
+  .video-placeholder p{
+    font-size:.78rem;
+    letter-spacing:.04em;
+    line-height:1.5;
+    max-width:240px;
+  }
+
+  /* personalized caption that fades over the video briefly when it starts */
+  .video-caption{
+    position:absolute;
+    top:9%;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:3;
+    text-align:center;
+    padding:.7rem 1.6rem;
+    border-radius:2px;
+    background:linear-gradient(180deg, rgba(13,22,17,.55), transparent);
+    opacity:0;
+    transition:opacity 1s var(--ease);
+    pointer-events:none;
+  }
+  .video-caption.show{ opacity:1; }
+  .video-caption p{
+    font-family:var(--font-display);
+    font-style:italic;
+    color:var(--parchment);
+    font-size:clamp(1.1rem, 4vw, 1.4rem);
+    margin-top:.2rem;
+  }
+
+  /* minimal custom control — replaces the native browser video toolbar */
+  .mute-btn{
+    position:absolute;
+    right:16px;
+    bottom:max(16px, env(safe-area-inset-bottom));
+    z-index:4;
+    width:38px; height:38px;
+    border-radius:50%;
+    background:rgba(13,22,17,.45);
+    backdrop-filter:blur(3px);
+    border:1px solid rgba(198,161,91,.4);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .mute-btn svg{ width:16px; height:16px; stroke:var(--parchment); }
+  .mute-btn .icon-muted{ display:none; }
+  .mute-btn.is-muted .icon-on{ display:none; }
+  .mute-btn.is-muted .icon-muted{ display:block; }
+
+  @media (min-width:780px){
+    .video-section{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:3rem;
+    }
+    .video-inner{
+      width:min(420px, 92vw);
+      aspect-ratio:9/19.5;
+      height:auto;
+      border-radius:38px;
+      border:1px solid rgba(198,161,91,.3);
+      box-shadow:0 30px 80px rgba(0,0,0,.5);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .cover-ambient, .seal-ring, .spark{ animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============================
+       COVER
+       Swap in a real ambient/background video by uncommenting the
+       <source> line below and pointing it at your file. Until then,
+       the animated gradient + drifting sparks behind it fill the space.
+       ============================ -->
+  <section class="cover" id="cover">
+    <video class="cover-video" id="coverVideo" autoplay muted loop playsinline>
+      <!-- <source src="assets/videos/cover-background.mp4" type="video/mp4"> -->
+    </video>
+    <div class="cover-ambient" aria-hidden="true"></div>
+    <div class="cover-veil"></div>
+
+    <div class="cover-content">
+      <p class="eyebrow">The Wedding Of</p>
+      <h1 class="couple-names">Ayu<span class="amp">&amp;</span>Bagas</h1>
+      <p class="cover-date">SATURDAY · 12 DECEMBER 2026</p>
+
+      <div class="guest-block" id="guestBlock">
+        <p class="eyebrow">To</p>
+        <p class="guest-name" id="guestName"></p>
+      </div>
+
+      <button class="seal-btn" id="openBtn" aria-label="Open the wedding invitation">
+        <span class="seal-ring" aria-hidden="true"></span>
+        <span class="seal-label">Open<br>Invitation</span>
+      </button>
+    </div>
+
+    <p class="scroll-hint" id="scrollHint">Tap the seal to begin</p>
+  </section>
+
+  <main id="mainContent">
+    <!-- ============================
+         MAIN INVITATION VIDEO
+         Uncomment the <source> line and point it at your real file
+         (e.g. main-invitation.mp4). This one video now carries the
+         schedule, venue, and RSVP info, so there's nothing else on
+         the page below the cover.
+         ============================ -->
+    <section class="video-section">
+      <div class="video-inner" id="videoInner">
+        <video class="main-video" id="mainVideo" playsinline preload="metadata">
+          <!-- <source src="assets/videos/main-invitation.mp4" type="video/mp4"> -->
+        </video>
+        <div class="video-placeholder" id="videoPlaceholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+            <polygon points="10 8 16 12 10 16 10 8"></polygon>
+            <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+          </svg>
+          <p>Your invitation video will appear here — add your file to replace this placeholder</p>
+        </div>
+        <div class="video-caption" id="videoCaption">
+          <p class="eyebrow" style="color:var(--gold)">For</p>
+          <p id="captionName"></p>
+        </div>
+        <button class="mute-btn" id="muteBtn" aria-label="Mute or unmute video">
+          <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
+            <polygon points="4 9 8 9 12 5 12 19 8 15 4 15 4 9"></polygon>
+            <path d="M16 8a5 5 0 0 1 0 8"></path>
+          </svg>
+          <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
+            <polygon points="4 9 8 9 12 5 12 19 8 15 4 15 4 9"></polygon>
+            <line x1="16" y1="8" x2="21" y2="13"></line>
+            <line x1="21" y1="8" x2="16" y2="13"></line>
+          </svg>
+        </button>
+      </div>
+    </section>
+  </main>
+
+<script>
+  // ---- read the guest name from the link, e.g. yoursite.com/?to=Budi+Santoso ----
+  function getGuestName(){
+    var params = new URLSearchParams(window.location.search);
+    var raw = params.get('to');
+    if (!raw) return null;
+    try{
+      return decodeURIComponent(raw.replace(/\+/g, ' ')).trim();
+    }catch(e){
+      return raw.replace(/\+/g, ' ').trim();
+    }
+  }
+
+  var guestName = getGuestName();
+  if (guestName){
+    document.getElementById('guestName').textContent = guestName;
+    document.getElementById('guestBlock').classList.add('show');
+    document.getElementById('captionName').textContent = guestName;
+  }
+
+  // ---- ambient sparks ----
+  (function(){
+    var ambient = document.querySelector('.cover-ambient');
+    var count = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 22;
+    for (var i = 0; i < count; i++){
+      var s = document.createElement('span');
+      s.className = 'spark';
+      s.style.left = (Math.random()*100) + '%';
+      s.style.setProperty('--drift', (Math.random()*40-20) + 'px');
+      s.style.animationDuration = (7 + Math.random()*8) + 's';
+      s.style.animationDelay = (Math.random()*10) + 's';
+      ambient.appendChild(s);
+    }
+  })();
+
+  // ---- open the invitation ----
+  var cover = document.getElementById('cover');
+  var openBtn = document.getElementById('openBtn');
+  var mainVideo = document.getElementById('mainVideo');
+  var coverVideo = document.getElementById('coverVideo');
+
+  openBtn.addEventListener('click', function(){
+    cover.classList.add('is-open');
+
+    // Try to autoplay the main video now — this click is a genuine user
+    // gesture, so browsers will allow audio (unlike autoplay on page load).
+    if (mainVideo.querySelector('source')) {
+      mainVideo.play().catch(function(){ /* ignored: user can hit play manually */ });
+    }
+
+    setTimeout(function(){
+      document.getElementById('mainContent').scrollIntoView({ behavior:'smooth' });
+    }, 350);
+  });
+
+  // ---- hide the video placeholder once a real source loads ----
+  var placeholder = document.getElementById('videoPlaceholder');
+  mainVideo.addEventListener('loadeddata', function(){ placeholder.style.display = 'none'; });
+  coverVideo.addEventListener('loadeddata', function(){ coverVideo.style.opacity = '.55'; });
+
+  // ---- no native toolbar, so tapping the video toggles play/pause ----
+  var videoInner = document.getElementById('videoInner');
+  videoInner.addEventListener('click', function(e){
+    if (e.target.closest('#muteBtn')) return; // let the mute button handle its own tap
+    if (!mainVideo.querySelector('source')) return;
+    if (mainVideo.paused){ mainVideo.play().catch(function(){}); }
+    else{ mainVideo.pause(); }
+  });
+
+  // ---- custom mute toggle, replaces the native volume control ----
+  var muteBtn = document.getElementById('muteBtn');
+  muteBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    mainVideo.muted = !mainVideo.muted;
+    muteBtn.classList.toggle('is-muted', mainVideo.muted);
+  });
+
+  // ---- show the "for [name]" caption once, the first time the video plays ----
+  var captionShown = false;
+  var videoCaption = document.getElementById('videoCaption');
+  mainVideo.addEventListener('play', function(){
+    if (captionShown || !guestName) return;
+    captionShown = true;
+    videoCaption.classList.add('show');
+    setTimeout(function(){ videoCaption.classList.remove('show'); }, 4500);
+  });
+</script>
+
+</body>
+</html>
