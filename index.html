@@ -257,6 +257,12 @@
 </style>
 </head>
 <body>
+<!-- Background music. Drop your file in and uncomment the <source>.
+     Lives outside the slideshow logic, so changing slides never restarts it. -->
+<audio id="bgm" loop preload="auto">
+  <!-- <source src="assets/song.mp3" type="audio/mpeg"> -->
+</audio>
+
 <div class="stage-wrap">
   <div class="stage" id="stage">
     <div class="progress" id="progress"></div>
@@ -269,7 +275,7 @@
       </div>
       <div class="ig-text">
         <p class="ig-title">the wedding of janto and stephanie</p>
-        <p class="ig-song">♪ <span id="songName">Perfect — Ed Sheeran</span></p>
+        <p class="ig-song" id="musicToggle" style="cursor:pointer;">♪ <span id="songName">Perfect — Ed Sheeran</span></p>
       </div>
     </div>
 
@@ -297,7 +303,7 @@
           <svg viewBox="0 0 20 20"><path d="M10 0 L12 8 L20 10 L12 12 L10 20 L8 12 L0 10 L8 8 Z" fill="var(--burgundy)"/></svg>
         </div>
         <div class="guest-block fade d4" id="guestBlock">
-          <p class="guest-to">Kepada Yth.</p>
+          <p class="guest-to">To</p>
           <p class="guest-name" id="guestName"></p>
         </div>
       </div>
@@ -573,52 +579,73 @@
   });
   const fills = document.querySelectorAll('.seg-fill');
 
-  function render(){
+  // ---- rAF-driven progress: fills each segment smoothly and advances ----
+  let elapsed = 0;      // ms spent on the current slide
+  let lastTs  = null;   // timestamp of previous frame
+
+  function slideDur(){ return parseInt(slides[current].dataset.duration || 4000, 10); }
+
+  function showSlide(){
     slides.forEach((s,i)=>s.classList.toggle('active', i===current));
-    fills.forEach((f,i)=>{
-      f.classList.remove('grow','full');
-      f.style.animationDuration='';
-      if(i<current){ f.classList.add('full'); }
-      else if(i===current){
-        f.style.width='0%';
-        void f.offsetWidth;
-        const dur = slides[current].dataset.duration || 4000;
-        f.style.animationDuration = dur+'ms';
-        f.classList.add('grow');
-      } else {
-        f.style.width='0%';
-      }
-    });
+    // past segments full, current + future empty (current fills via frame())
+    fills.forEach((f,i)=>{ f.style.width = i < current ? '100%' : '0%'; });
+    elapsed = 0;
+    lastTs  = null;
   }
 
-  function scheduleNext(){
-    clearTimeout(timer);
-    if(!playing) return;
-    const dur = parseInt(slides[current].dataset.duration || 4000, 10);
-    timer = setTimeout(()=>{ go(1); }, dur);
+  function frame(ts){
+    if(playing){
+      if(lastTs != null) elapsed += ts - lastTs;
+      lastTs = ts;
+      const dur = slideDur();
+      let frac = elapsed / dur;
+      if(frac > 1) frac = 1;
+      fills[current].style.width = (frac * 100) + '%';
+      if(elapsed >= dur){
+        current = (current + 1) % slides.length;
+        showSlide();
+      }
+    } else {
+      lastTs = null; // don't accumulate time while paused
+    }
+    requestAnimationFrame(frame);
   }
 
   function go(dir){
     current = (current + dir + slides.length) % slides.length;
-    render();
-    scheduleNext();
+    showSlide();
   }
 
   function jumpTo(i){
     current = i;
-    render();
-    scheduleNext();
+    showSlide();
   }
 
   function togglePlay(){
     playing = !playing;
     document.getElementById('playBtn').textContent = playing ? 'Pause' : 'Play';
-    if(playing){ scheduleNext(); } else { clearTimeout(timer); }
+    lastTs = null;
+  }
+
+  // ---- background music: independent of the slideshow, so it never restarts ----
+  const bgm = document.getElementById('bgm');
+  const hasMusic = bgm && bgm.querySelector('source');
+  function startMusic(){ if(hasMusic) bgm.play().catch(()=>{}); }
+  // browsers block audio autoplay until a user gesture — start on first tap
+  if(hasMusic){
+    window.addEventListener('pointerdown', function once(){
+      startMusic();
+      window.removeEventListener('pointerdown', once);
+    });
+    document.getElementById('musicToggle').addEventListener('click', function(e){
+      e.stopPropagation();
+      if(bgm.paused) bgm.play().catch(()=>{}); else bgm.pause();
+    });
   }
 
   if(!invalidInvite){
-    render();
-    scheduleNext();
+    showSlide();
+    requestAnimationFrame(frame);
   }
 </script>
 </body>
