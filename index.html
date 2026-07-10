@@ -219,6 +219,38 @@
     font-weight:600;font-size:13px;cursor:pointer;
   }
   .btn:hover{background:var(--cream-2);}
+
+  /* personalized "to:" block, filled in by JS from the link's ?g= code */
+  .guest-block{margin-top:16px;display:none;}
+  .guest-block.show{display:block;}
+  .guest-to{
+    font-family:'Quicksand',sans-serif;font-weight:600;
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--teal);margin:0 0 2px;
+  }
+  .guest-name{
+    font-family:'Alex Brush',cursive;
+    font-size:30px;line-height:1.1;color:var(--burgundy-dark);margin:0;
+  }
+
+  /* neutral screen shown when the ?g= code is missing from the guest list */
+  .invalid-screen{
+    position:fixed;inset:0;z-index:999;
+    display:none;align-items:center;justify-content:center;
+    text-align:center;padding:32px;
+    background:linear-gradient(180deg,#efe0e6,#f7ece7 40%,#eef0e4);
+  }
+  .invalid-screen.show{display:flex;}
+  .invalid-screen .inv-inner{max-width:320px;}
+  .invalid-screen h2{
+    font-family:'Alex Brush',cursive;font-size:42px;
+    color:var(--burgundy);margin:0 0 14px;
+  }
+  .invalid-screen p{
+    font-family:'Nunito',sans-serif;font-size:14.5px;
+    line-height:1.7;color:var(--ink);margin:0;
+  }
+
   @media (prefers-reduced-motion: reduce){
     .twinkle,.butterfly,.seg-fill.grow{animation:none !important;}
   }
@@ -264,6 +296,10 @@
         <div class="sparkle twinkle fade d3" style="position:relative;width:16px;height:16px;margin-top:6px;">
           <svg viewBox="0 0 20 20"><path d="M10 0 L12 8 L20 10 L12 12 L10 20 L8 12 L0 10 L8 8 Z" fill="var(--burgundy)"/></svg>
         </div>
+        <div class="guest-block fade d4" id="guestBlock">
+          <p class="guest-to">Kepada Yth.</p>
+          <p class="guest-name" id="guestName"></p>
+        </div>
       </div>
 
       <svg class="fade d4" width="90" height="70" viewBox="0 0 90 70">
@@ -275,9 +311,12 @@
 
     <!-- SLIDE 2: PORTRAIT DUET + FOUNTAIN -->
     <div class="slide" data-duration="4200">
-      <div class="sparkle twinkle fade d1" style="top:10px;left:50%;transform:translateX(-50%);width:22px;height:22px;">
-        <svg viewBox="0 0 20 20"><path d="M10 0 C10 8 14 10 20 10 C14 10 10 12 10 20 C10 12 6 10 0 10 C6 10 10 8 10 0 Z" fill="var(--rose)"/></svg>
-      </div>
+       <svg class="garland" viewBox="0 0 400 130" preserveAspectRatio="none">
+        <path d="M0 10 Q60 40 120 15 T240 20 T400 5 V0 H0 Z" fill="#7f9a72" opacity="0.55"/>
+        <path d="M0 0 Q80 55 160 25 T320 30 T400 0 V0 H0 Z" fill="#9db98e" opacity="0.5"/>
+        <g fill="#d9a441"><circle cx="40" cy="30" r="7"/><circle cx="70" cy="18" r="6"/><circle cx="330" cy="20" r="7"/><circle cx="300" cy="32" r="6"/></g>
+        <g fill="#e58fae"><circle cx="150" cy="14" r="6"/><circle cx="250" cy="18" r="6"/><circle cx="55" cy="35" r="5"/><circle cx="345" cy="35" r="5"/></g>
+      </svg>
 
       <div style="display:flex;gap:14px;margin-top:34px;" class="fade d2">
         <svg class="arch-frame" width="118" height="150" viewBox="0 0 118 150">
@@ -317,9 +356,13 @@
 
     <!-- SLIDE 3: BRIDE -->
     <div class="slide" data-duration="4200">
-      <div class="sparkle twinkle fade d1" style="top:14px;left:20px;width:20px;height:20px;">
-        <svg viewBox="0 0 20 20"><path d="M10 0 L12 8 L20 10 L12 12 L10 20 L8 12 L0 10 L8 8 Z" fill="var(--gold)"/></svg>
-      </div>
+       <svg class="garland" viewBox="0 0 400 130" preserveAspectRatio="none">
+        <path d="M0 10 Q60 40 120 15 T240 20 T400 5 V0 H0 Z" fill="#7f9a72" opacity="0.55"/>
+        <path d="M0 0 Q80 55 160 25 T320 30 T400 0 V0 H0 Z" fill="#9db98e" opacity="0.5"/>
+        <g fill="#d9a441"><circle cx="40" cy="30" r="7"/><circle cx="70" cy="18" r="6"/><circle cx="330" cy="20" r="7"/><circle cx="300" cy="32" r="6"/></g>
+        <g fill="#e58fae"><circle cx="150" cy="14" r="6"/><circle cx="250" cy="18" r="6"/><circle cx="55" cy="35" r="5"/><circle cx="345" cy="35" r="5"/></g>
+      </svg>
+
       <svg class="fade d2" width="140" height="170" viewBox="0 0 140 170" style="margin-top:26px;">
         <path d="M14 160 L14 74 A56 56 0 0 1 126 74 L126 160 Z" fill="var(--teal)" stroke="var(--rose)" stroke-width="7"/>
         <rect x="9" y="157" width="122" height="10" rx="4" fill="var(--rose)"/>
@@ -335,9 +378,13 @@
 
     <!-- SLIDE 4: GROOM -->
     <div class="slide" data-duration="4200">
-      <div class="sparkle twinkle fade d1" style="top:14px;right:20px;width:20px;height:20px;">
-        <svg viewBox="0 0 20 20"><path d="M10 0 L12 8 L20 10 L12 12 L10 20 L8 12 L0 10 L8 8 Z" fill="var(--gold)"/></svg>
-      </div>
+       <svg class="garland" viewBox="0 0 400 130" preserveAspectRatio="none">
+        <path d="M0 10 Q60 40 120 15 T240 20 T400 5 V0 H0 Z" fill="#7f9a72" opacity="0.55"/>
+        <path d="M0 0 Q80 55 160 25 T320 30 T400 0 V0 H0 Z" fill="#9db98e" opacity="0.5"/>
+        <g fill="#d9a441"><circle cx="40" cy="30" r="7"/><circle cx="70" cy="18" r="6"/><circle cx="330" cy="20" r="7"/><circle cx="300" cy="32" r="6"/></g>
+        <g fill="#e58fae"><circle cx="150" cy="14" r="6"/><circle cx="250" cy="18" r="6"/><circle cx="55" cy="35" r="5"/><circle cx="345" cy="35" r="5"/></g>
+      </svg>
+
       <svg class="fade d2" width="140" height="170" viewBox="0 0 140 170" style="margin-top:26px;">
         <path d="M14 160 L14 74 A56 56 0 0 1 126 74 L126 160 Z" fill="var(--teal)" stroke="var(--rose)" stroke-width="7"/>
         <rect x="9" y="157" width="122" height="10" rx="4" fill="var(--rose)"/>
@@ -352,7 +399,7 @@
     </div>
 
     <!-- SLIDE 5: SAVE THE DATE -->
-    <div class="slide" data-duration="6500" style="justify-content:flex-start;padding-top:44px;">
+    <div class="slide" data-duration="6500" style="justify-content:flex-start;padding-top:60px;">
       <div class="butterfly" style="top:6px;right:22px;width:28px;height:22px;">
         <svg viewBox="0 0 40 30"><path d="M20 15 C10 -5 -5 0 5 15 C-5 30 10 35 20 15 Z" fill="#e6a8c2"/><path d="M20 15 C30 -5 45 0 35 15 C45 30 30 35 20 15 Z" fill="#8fb7e0"/></svg>
       </div>
@@ -400,6 +447,112 @@
     <span>Tap sides to navigate</span>
   </div>
 </div>
+
+<!-- shown instead of the invitation when the ?g= code isn't on the guest list -->
+<div class="invalid-screen" id="invalidScreen">
+  <div class="inv-inner">
+    <h2>Undangan Tidak Valid</h2>
+    <p>Tautan undangan ini tidak valid. Silakan gunakan tautan pribadi yang dikirimkan kepada Anda, atau hubungi Janto &amp; Stephanie.</p>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  //  GUEST LIST  —  the only names that get a personalized invite
+  //  ------------------------------------------------------------
+  //  Each guest gets a private code; their link is  yoursite.com/?g=CODE
+  //  Add one line per guest below:  code : 'Full Name'.
+  //
+  //  NOTE: because this is a static page with no server, the list
+  //  still lives in the page source — anyone opening DevTools can
+  //  read it. This stops casual link-editing / param-swapping; it
+  //  is not a hard security wall. The name check at the door remains
+  //  the real gate.
+  // ============================================================
+  var GUESTS = {
+    'r45bvv': 'Julio Kolopitawondal',
+    'z16na1': 'Ayu Gracia',
+    '5pii8r': 'Dyah Annisa',
+    '51yq04': 'Jelia Lolindu',
+    '0og6y7': 'Adinda Manueke',
+    '0c38nb': 'Adityano Ratu',
+    'p8uv5n': 'Dipta P',
+    'p1jx86': 'Hendriawan Jumawan',
+    'fd233t': 'Patricia Adam',
+    'inzahv': 'Raisa Maringka',
+    'w2pxq6': 'Ryan J',
+    'qgbisy': 'Elwene Lintong',
+    'o38f71': 'Julia Wowor',
+    'rhtj95': 'Astrid Mongi',
+    '4bdw2l': 'Switly Mait',
+    'kany8m': 'Erik Parera',
+    'vxbd2n': 'Clara Warouw',
+    'kwblxv': 'Michelle Surentu',
+    'h44eui': 'Nata',
+    'r8brzk': 'Aney Turambi',
+    'all76f': 'Ling-ling',
+    '6dvnlj': 'Martino',
+    'jxjlsi': 'Grady Wantah',
+    '4ez2fg': 'Junior Lakat',
+    '6oh6xw': 'Aron Kaligis',
+    'kq6t80': 'Billy Rewah',
+    '6nayyh': 'Haryo Hartoyo',
+    'j8n1ud': 'Mariska Tanauma',
+    't5psam': 'Monica Tangka',
+    'eb5j8n': 'Ai',
+    'dic1ve': 'Nikita Lengkey',
+    'dnasez': 'Pingkan Kenda',
+    'ejz7zd': 'Stevani Andries',
+    '9nr3de': 'Kezi Pangemanan',
+    '1b8zg7': 'Richi Lala',
+    '0fo5ux': 'Valdo Palenewen',
+    'vd4nan': 'Henry Burhan & Jes',
+    's144ik': 'Ziby Makalew',
+    'ibioln': 'Cika',
+    'k9xke2': 'Ecei',
+    '5gj8oo': 'Stevan',
+    'uunf5c': 'Maynard',
+    'y9p3oa': 'Riry',
+    'fv58eh': 'Jojo',
+    '4e39mt': 'Seyla',
+    'r7bgoq': 'Abe',
+    'uyph5k': 'Beny',
+    '68qr9x': 'Ipin',
+    'hro05h': 'Del',
+    'zfmi3l': 'Ika Pankey',
+    '08am87': 'Ika Kason',
+    '6wjb9k': 'Yoga',
+    'ziwf5i': 'Cindry',
+    'wfxuxn': 'Tinut',
+    'tjj8rm': 'Gead',
+    '090jl6': 'Ifer',
+    'xviguk': 'Dada',
+    'pd2vmg': 'Mas Aiko',
+  };
+
+  // ---- read the invite code from the link, e.g. yoursite.com/?g=k7f2a9 ----
+  var inviteCode = (new URLSearchParams(window.location.search).get('g') || '').trim();
+  var guestName = null;
+  var invalidInvite = false;
+
+  if (inviteCode){
+    if (Object.prototype.hasOwnProperty.call(GUESTS, inviteCode)){
+      guestName = GUESTS[inviteCode];
+    } else {
+      // code present but not on the list → block, show neutral message
+      invalidInvite = true;
+    }
+  }
+  // (no code at all → generic invite: names + story, but no personalized "To:")
+
+  if (invalidInvite){
+    document.getElementById('invalidScreen').classList.add('show');
+    document.querySelector('.stage-wrap').style.display = 'none';
+  } else if (guestName){
+    document.getElementById('guestName').textContent = guestName;
+    document.getElementById('guestBlock').classList.add('show');
+  }
+</script>
 
 <script>
   const slides = document.querySelectorAll('.slide');
@@ -463,8 +616,10 @@
     if(playing){ scheduleNext(); } else { clearTimeout(timer); }
   }
 
-  render();
-  scheduleNext();
+  if(!invalidInvite){
+    render();
+    scheduleNext();
+  }
 </script>
 </body>
 </html>
