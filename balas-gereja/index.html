@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #e8e2d6; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes drawLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes petalFall { 0% { transform: translateY(-8vh) rotate(0deg); opacity: 0; } 10% { opacity: .5; } 90% { opacity: .5; } 100% { transform: translateY(105vh) rotate(320deg); opacity: 0; } }
+    ::selection { background: #b99a5b; color: #fff; }
+  </style>
+</helmet>
+<div style="min-height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; padding: 48px 20px; background: radial-gradient(120% 80% at 50% 0%, #efe9dd 0%, #e5dece 55%, #ddd4c1 100%); font-family: 'Jost', sans-serif; position: relative; overflow: hidden;">
+
+  <div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; overflow: hidden;">
+    <span style="position: absolute; left: 8%; top: 0; width: 10px; height: 10px; border-radius: 60% 20% 60% 20%; background: #c9b48a; animation: petalFall 14s linear infinite; animation-delay: 0s;"></span>
+    <span style="position: absolute; left: 24%; top: 0; width: 7px; height: 7px; border-radius: 60% 20% 60% 20%; background: #d8c8a4; animation: petalFall 18s linear infinite; animation-delay: 3s;"></span>
+    <span style="position: absolute; left: 47%; top: 0; width: 9px; height: 9px; border-radius: 60% 20% 60% 20%; background: #c9b48a; animation: petalFall 16s linear infinite; animation-delay: 6s;"></span>
+    <span style="position: absolute; left: 68%; top: 0; width: 6px; height: 6px; border-radius: 60% 20% 60% 20%; background: #d8c8a4; animation: petalFall 20s linear infinite; animation-delay: 2s;"></span>
+    <span style="position: absolute; left: 86%; top: 0; width: 11px; height: 11px; border-radius: 60% 20% 60% 20%; background: #c9b48a; animation: petalFall 15s linear infinite; animation-delay: 8s;"></span>
+    <span style="position: absolute; left: 58%; top: 0; width: 8px; height: 8px; border-radius: 60% 20% 60% 20%; background: #d8c8a4; animation: petalFall 19s linear infinite; animation-delay: 11s;"></span>
+  </div>
+
+  <div style="position: relative; width: 100%; max-width: 560px; background: linear-gradient(180deg, #fdfbf6 0%, #faf6ec 100%); border-radius: 280px 280px 22px 22px; box-shadow: 0 2px 2px rgba(120,100,60,.04), 0 30px 70px -30px rgba(90,72,40,.4), 0 4px 20px -6px rgba(90,72,40,.18); padding: 74px 52px 56px; animation: fadeUp 1s ease both; overflow: hidden;">
+
+    <div style="position: absolute; inset: 14px 14px 14px 14px; border: 1px solid #e2d3ab; border-radius: 268px 268px 12px 12px; pointer-events: none;"></div>
+    <div style="position: absolute; inset: 19px 19px 19px 19px; border: 1px solid #efe4c9; border-radius: 262px 262px 8px 8px; pointer-events: none;"></div>
+
+    <div style="position: relative; text-align: center;">
+
+      <div style="letter-spacing: .42em; font-size: 11px; text-transform: uppercase; color: #a98c50; font-weight: 400; animation: fadeIn 1.2s ease .3s both;">Together with their families</div>
+
+      <div style="margin: 26px 0 6px; animation: fadeUp 1s ease .5s both;">
+        <div style="font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: clamp(52px, 13vw, 82px); line-height: .96; color: #2f2a22; letter-spacing: .01em;">{{ nameOne }}</div>
+        <div style="font-family: 'Pinyon Script', cursive; font-size: clamp(38px, 9vw, 56px); color: #b99a5b; line-height: 1; margin: 2px 0 4px;">&amp;</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: clamp(52px, 13vw, 82px); line-height: .96; color: #2f2a22; letter-spacing: .01em;">{{ nameTwo }}</div>
+      </div>
+
+      <div style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 400; font-size: 18px; color: #6a6151; margin-top: 14px; animation: fadeIn 1.2s ease .8s both;">request the pleasure of your company<br>at the celebration of their marriage</div>
+
+      <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin: 30px auto 26px; max-width: 300px; animation: fadeIn 1s ease 1s both;">
+        <span style="flex: 1; height: 1px; background: linear-gradient(90deg, transparent, #d8c495); transform-origin: right; animation: drawLine 1s ease 1.1s both;"></span>
+        <span style="width: 6px; height: 6px; background: #b99a5b; border-radius: 50%; transform: rotate(45deg);"></span>
+        <span style="flex: 1; height: 1px; background: linear-gradient(90deg, #d8c495, transparent); transform-origin: left; animation: drawLine 1s ease 1.1s both;"></span>
+      </div>
+
+      <div style="animation: fadeUp 1s ease 1.15s both;">
+        <div style="display: flex; align-items: stretch; justify-content: center; gap: 20px;">
+          <div style="text-align: center; align-self: center;">
+            <div style="letter-spacing: .3em; font-size: 12px; text-transform: uppercase; color: #8a7c5e;">{{ weekday }}</div>
+          </div>
+          <div style="width: 1px; background: #e4d6b2;"></div>
+          <div style="text-align: center;">
+            <div style="font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(64px, 15vw, 92px); line-height: .82; color: #2f2a22;">{{ day }}</div>
+          </div>
+          <div style="width: 1px; background: #e4d6b2;"></div>
+          <div style="text-align: center; align-self: center;">
+            <div style="letter-spacing: .3em; font-size: 12px; text-transform: uppercase; color: #8a7c5e;">{{ month }}</div>
+            <div style="letter-spacing: .3em; font-size: 12px; text-transform: uppercase; color: #8a7c5e; margin-top: 8px;">{{ year }}</div>
+          </div>
+        </div>
+        <div style="letter-spacing: .28em; font-size: 12px; text-transform: uppercase; color: #a98c50; margin-top: 16px;">at {{ time }}</div>
+      </div>
+
+      <div style="margin-top: 30px; animation: fadeIn 1.2s ease 1.35s both;">
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #2f2a22; font-weight: 500;">{{ venue }}</div>
+        <div style="font-size: 13px; letter-spacing: .12em; color: #7a7161; margin-top: 5px; text-transform: uppercase;">{{ location }}</div>
+      </div>
+
+      <div style="margin-top: 34px; padding-top: 6px; animation: fadeUp 1s ease 1.5s both;">
+        <sc-if value="{{ replied }}" hint-placeholder-val="{{ false }}">
+          <div style="min-height: 92px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; animation: fadeIn .5s ease both;">
+            <div style="font-family: 'Pinyon Script', cursive; font-size: 40px; color: #b99a5b; line-height: 1;">{{ replyTitle }}</div>
+            <div style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 17px; color: #6a6151;">{{ replyNote }}</div>
+            <button onClick="{{ reset }}" style="margin-top: 6px; background: none; border: none; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: #a89877; text-decoration: underline; text-underline-offset: 3px;">change response</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notReplied }}" hint-placeholder-val="{{ true }}">
+          <div style="animation: fadeIn .5s ease both;">
+            <div style="letter-spacing: .3em; font-size: 11px; text-transform: uppercase; color: #a98c50; margin-bottom: 16px;">Kindly reply by {{ rsvpBy }}</div>
+            <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+              <button onClick="{{ accept }}" style="cursor: pointer; font-family: 'Jost', sans-serif; font-weight: 400; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #fdfbf6; background: #2f2a22; border: 1px solid #2f2a22; padding: 15px 30px; border-radius: 40px; transition: all .25s ease;" style-hover="background: #b99a5b; border-color: #b99a5b; color: #fff; transform: translateY(-2px);">Joyfully accepts</button>
+              <button onClick="{{ decline }}" style="cursor: pointer; font-family: 'Jost', sans-serif; font-weight: 400; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #6a6151; background: transparent; border: 1px solid #cfbf98; padding: 15px 30px; border-radius: 40px; transition: all .25s ease;" style-hover="border-color: #b99a5b; color: #2f2a22; transform: translateY(-2px);">Regretfully declines</button>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="margin-top: 30px; display: flex; align-items: center; justify-content: center; gap: 10px; animation: fadeIn 1.4s ease 1.7s both;">
+        <span style="width: 22px; height: 1px; background: #d8c495;"></span>
+        <span style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; color: #9a8c6c;">Reception to follow</span>
+        <span style="width: 22px; height: 1px; background: #d8c495;"></span>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:640,&quot;height&quot;:900},&quot;nameOne&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Janto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Couple&quot;},&quot;nameTwo&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Stephanie&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Couple&quot;},&quot;weekday&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Sunday&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Date &amp; time&quot;},&quot;day&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;03&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Date &amp; time&quot;},&quot;month&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;January&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Date &amp; time&quot;},&quot;year&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;2027&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Date &amp; time&quot;},&quot;time&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;half past four in the afternoon&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Date &amp; time&quot;},&quot;venue&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;The Willowmere Estate&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Venue&quot;},&quot;location&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Hudson Valley, New York&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Venue&quot;},&quot;rsvpBy&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;May 1st&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;RSVP&quot;}}">
+class Component extends DCLogic {
+  state = { status: null };
+  renderVals() {
+    const p = this.props;
+    const status = this.state.status;
+    return {
+      nameOne: p.nameOne ?? 'Amelia',
+      nameTwo: p.nameTwo ?? 'Julian',
+      weekday: p.weekday ?? 'Saturday',
+      day: p.day ?? '27',
+      month: p.month ?? 'June',
+      year: p.year ?? '2026',
+      time: p.time ?? 'half past four in the afternoon',
+      venue: p.venue ?? 'The Willowmere Estate',
+      location: p.location ?? 'Hudson Valley, New York',
+      rsvpBy: p.rsvpBy ?? 'May 1st',
+      replied: status !== null,
+      notReplied: status === null,
+      replyTitle: status === 'accept' ? 'With joy!' : 'With regret',
+      replyNote: status === 'accept'
+        ? 'We can\u2019t wait to celebrate with you.'
+        : 'You\u2019ll be dearly missed.',
+      accept: () => this.setState({ status: 'accept' }),
+      decline: () => this.setState({ status: 'decline' }),
+      reset: () => this.setState({ status: null }),
+    };
+  }
+}
+</script>
+</body>
+</html>
